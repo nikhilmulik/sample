@@ -1,0 +1,94 @@
+{% load process_it_extras %}
+{% load static from staticfiles %}
+
+{% block mail_body %}
+	{% if val.Mawb != '' %}		
+		<!--<div style="background-color:#CCC5C5;">
+			Mawb : {{val.Mawb}}---{{val.id}}			
+		<div id="inscope_push_response">
+			Inscope :  
+			<a href="javascript:void(0);" onclick="ajaxWithSerialize('n','mail_details','/process_it/moveInscope/','id={{val.id}}');">Yes</a>			
+			<a href="javascript:void(0);" onclick="ajaxWithSerialize('n','inscope_push_response','/out_scope','id="{{val.id}}"');">No</a>
+		</div>
+
+		</div>-->
+		{% for hbl in val.h_a_w_b_s %}
+			<table border="1">
+				<tr>
+					{% for field in hbl %}
+					<td  style="background-color:#F5F5F5;display:inline-block;">
+						{{field}}
+					</td>
+					{% endfor %}
+				</tr>
+			</table>
+		{% endfor %}
+
+	{% endif %}	
+	
+	{% for category in val.categories %}
+		{% ifequal category "red" %}
+		
+		<table width="100%">
+			<tr>
+				<td style="width:100px"><input value='lax_import' type='hidden'><input value={{val.id}} id='id' name='id' type='hidden'><input type="text" name="chkmawb" id="chkmawb"  /></td>
+				<td style="width:25px"><img src="{% static 'img/check_icon.gif' %}" type="button" onKeyPress="alert('kgj');if(IsEnterKey(event)==true){chkhasmawb($('#id').val(),$('#chkmawb').val())}" onclick="chkhasmawb($('#id').val(),$('#chkmawb').val())"/></td>
+				<td ><div id="load_resp"></div></td>
+			</tr>
+		</table>
+		
+		{% endifequal %}
+	{% empty %}
+		
+		<table width="100%">
+			<tr>
+				<td style="width:100px"><input value='lax_import' type='hidden'><input value={{val.id}} id='id' name='id' type='hidden'><input type="text" name="chkmawb" id="chkmawb"  /></td>
+				<td style="width:25px"><img src="{% static 'img/check_icon.gif' %}" type="button" onKeyPress="alert('kgj');if(IsEnterKey(event)==true){chkhasmawb($('#id').val(),$('#chkmawb').val())}" onclick="chkhasmawb($('#id').val(),$('#chkmawb').val())"/></td>
+				<td ><div id="load_resp"></div></td>
+			</tr>
+		</table>
+		
+	{% endfor %}
+	<style> 
+	.font_1{
+			font: 13px arial;
+	}
+	</style>
+	
+	<div style="width: ">
+	<table width="100%" class="tableWithFloatingHeader"  >
+	
+	<tbody style="  ">
+		<tr><td colspan="2"><h4 id="curr_email_subject">{{val.subject}}</h4></td></tr>
+		
+		<tr><td colspan="2"><font size="2" face="arial" color="Black" id="curr_email_from">{{val.from}} </font></td></tr>
+		<tr><td  class="font_1" style="width:50px;">Sent:</td><td><font size="1" face="arial" color="Black" id="curr_email_date">{{val.date|date}} </font></td></tr>
+		<tr><td class="font_1" valign="top">To: </td><td><span class="font_1" id="curr_email_to"> {{val.to}}</td></tr>
+		<tr><td class="font_1" valign="top" >Cc: </td><td><span class="font_1" id="curr_email_cc"> {{val.cc}}</td></tr>
+		<tr><td colspan="2">
+		{% for attachment in val.attachments_list %}
+		<a class="font_1" href="#" onclick="window.open('/process_it/downloadAttachment?id={{attachment}}&nm={{ attachment|truncateAttchmentName }}', 'xxx');" > 
+			{{ attachment|truncateAttchmentName }}
+		</a> &nbsp;
+		{% endfor %}
+		</td></tr>
+		
+		<tr><td colspan="2"><hr/></td></tr>
+	</tbody>	
+	<tbody>
+	
+<tr><td colspan="2">
+		<p id="curr_email_body">
+			{% if not val.html_text %}
+				<pre>{{val.body_text|safe}}</pre>
+			{% else %}
+				{{val.html_text|safe}}
+			{% endif %}
+		</p>
+</td></tr>
+</tbody>
+	</table>
+	
+	</div>
+<font size="1" face="arial" color="">{{val.id}}</font> 
+{% endblock %}

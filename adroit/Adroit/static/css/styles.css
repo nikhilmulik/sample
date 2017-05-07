@@ -1,0 +1,461 @@
+
+body
+{
+	font-family:Arial;
+	font: 11px/1.5em arial;
+	background:#FFFFFF;
+	
+}
+html, table
+{
+	font-family:Arial;
+	font-size:11px;
+}
+INPUT,textarea
+{
+FONT: 11px Arial;
+}
+SELECT
+{
+FONT: 11px Arial;
+}
+table
+{
+	empty-cells: show;
+}
+
+ul 
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+ul li 
+{
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+/*******************************************Login Styles*****************************/
+/* ----------------------------------------------- ----------------------------------------------- */
+.signin {
+	margin: 0;
+  	padding: 0;
+  	background: #f2f2f2 url("/static/img/back.gif") repeat-x;
+  	font: 12px/1.5em Helvetica, Verdana, Sans-serif;
+   	color: #333;
+ 	}
+
+/* ----------------------------------------------- ----------------------------------------------- */
+.signin #login {
+	margin: 0;
+	padding: 50px;
+	background: #fff url("/static/img/bgdFooter1Signinr.gif") repeat-y;
+	}
+/* ----------------------------------------------- ----------------------------------------------- */
+.signin #wrapper {
+	margin: 40px auto;
+	width: 480px;
+	}
+/* ----------------------------------------------- ----------------------------------------------- */
+.signin #navigation1 {
+	margin: 0;
+	padding: 0;
+	width: 480px;
+	}
+/* ----------------------------------------------- ----------------------------------------------- */
+.signin #navigation2 {
+	margin: 0;
+	padding: 0;
+	height: 136px;
+	width: 480px;
+	background: #dbdbdb url("/static/img/bgdNavigation1Signin.gif") no-repeat;
+	}
+.signin #footer1 {
+	background: #fff url("/static/img/bgdFooter1Signin.gif") left bottom no-repeat;
+	}
+
+/* ----------------------------------------------- ----------------------------------------------- */
+/******************************************* Form Login Styles*****************************/
+/* ----------------------------------------------- ----------------------------------------------- */
+.form-login {
+	margin: 0;
+	padding: 0;
+	font-size: 14px;
+	}
+/* ----------------------------------------------- ----------------------------------------------- */
+	.form-login dl {
+	overflow: hidden;
+	margin: 0;
+	padding: 10px 12px;
+	background: #fff;
+	}
+/* ----------------------------------------------- ----------------------------------------------- */
+.form-login dt {
+	margin: 0;
+	padding: 2px 0;
+	}
+/* ----------------------------------------------- ----------------------------------------------- */
+.form-login dd {
+	margin: 0;
+	padding: 0 0 8px;
+	}
+/* ----------------------------------------------- ----------------------------------------------- */
+.form-login .username input,
+.form-login .password input,
+.form-login .email input,{
+	margin: 0;
+	padding: 1px 4px;
+	font-size: 16px;
+	height: 24px;
+	width: 398px;
+	background: #fff;
+	border: 1px solid #dbdbdb;
+	border-bottom: 1px solid #dbdbdb;
+	}
+/* ----------------------------------------------- ----------------------------------------------- */
+/************************************GSK Entry styles***********************************/
+/* ----------------------------------------------- ----------------------------------------------- */	
+		div.Highlight
+		{
+			font-weight:bold;
+			
+		}
+		.GiveBorder
+		{
+			font-weight:bold;
+			-moz-border-radius:7px;
+			border: 2px solid #FF8800;
+		}
+		.Border
+		{
+				-moz-border-radius:20px;
+				border: 1px solid gray;	
+		}
+		.BorderHighlight
+		{
+				-moz-border-radius:20px;
+				border: 1px solid gray;
+				background-color:#E3F3FB;
+		}
+		.Lock
+		{
+			background-color:#E3F3FB;
+			border: 0px;
+		}
+/* ----------------------------------------------- ----------------------------------------------- */
+/************************************FooterStyle***********************************/
+/* ----------------------------------------------- ----------------------------------------------- */
+#footer1 {
+	margin: 0;
+	padding: 0 20px;
+	line-height: 30px;
+	font-size: 11px;
+	color: #666;
+	background: #fff url("/static/img/bgd-footer11.gif") bottom no-repeat;
+	border-top: 1px solid #dbdbdb;
+	}
+#footer1 a:link,
+#footer1 a:visited {
+	color: #666;
+	}
+/* ----------------------------------------------- ----------------------------------------------- */
+/************************************General***********************************/
+/* ----------------------------------------------- ----------------------------------------------- */
+#logo1 
+{
+	float: left;
+	margin: 5px 0 15px 5px;
+	padding: 0 14px 10px 5px;
+	width: 220px;
+	height: 44px;
+}
+/************************************Report Table Style***********************************/
+/* ----------------------------------------------- ----------------------------------------------- */
+.tableheading
+{
+	background-color:#E3F3FB;
+	border:1px solid #A7CCDF;
+	color:#03A758;
+	text-align: center;
+	
+}
+.tableheading a:link,.tableheading a:visited
+{
+	font:11px Arial;
+}
+.tableheading th
+{
+	padding: 3px;
+}	
+.colStyle{
+	margin: 0;
+	padding: 0 4px;
+	border-bottom: 1px solid #ddd;
+	white-space: nowrap;
+	height: 22px;
+	text-align:left; 
+}
+.errorColStyle{
+	margin: 0;
+	padding: 0 4px;
+	border: 2px solid #ddd;
+	white-space: nowrap;
+	height: 22px;
+	text-align:left;
+	border-color:red;
+}
+/* -----------------------------------------------Row Style ----------------------------------------------- */
+.rowRollOver
+{
+	background-color: #FFFFCC;
+	border-bottom: 1px solid #ddd;
+	FONT: 11px Arial;
+	height:10px;
+}
+.SelecteRow
+{
+	background-color:#EFEFEF;
+	FONT: 11px Arial;
+	height:10px;
+}
+.rowStyle
+{
+	background-color:#FFFFFF;
+	FONT: 11px Arial;
+	height:10px;
+}
+
+/* ----------------------------------------------- ----------------------------------------------- */
+/************************************Link Styles***********************************/
+/* ----------------------------------------------- ----------------------------------------------- */
+
+a:link.List,a:visited.List 
+{
+	display: block;
+	width: 100px;
+	height: 20px;
+	background-image:  url("/static/img/filterNew.gif");
+	line-height: 20px;
+	color:#639DBA;
+	text-align:center;
+	vertical-align: center;
+	font-size: 11px ;
+	font-family:Arial;
+	font-weight:bold;
+	letter-spacing: 0px;
+	text-decoration:none;
+	margin-bottom:-6px;
+}
+
+a:link 
+{
+	color: #47AAE6;
+	text-decoration: none;
+}
+a:visited 
+{
+	color: #47AAE6;
+	text-decoration: none;
+}
+a:hover 
+{
+	color: #8F0802;
+	text-decoration: underline;
+}
+a:link img,
+a:visited img,
+a:hover img 
+{
+	border: 0;
+	background: none;
+}
+---------------------------------------------- ----------------------------------------------- */
+/************************************Header Tab Styles***********************************/
+/* ----------------------------------------------- ----------------------------------------------- */
+#navInvoices 
+{
+	clear: both;
+	float: left;
+	width:auto;
+	margin: 0 0 0;
+	padding: 0 10px;
+}
+#navInvoices li 
+{
+	float: left;
+	margin: 0 1px 0 0;
+	padding: 0;
+	line-height: 22px;
+	background: url("/static/img/bgdNavInvoicesActive1.gif") top left no-repeat;
+	font-size:12px;
+}
+#navInvoices li a:link, #navInvoices li a:visited 
+{
+	float: left;
+	margin: 0;
+	padding: 0 12px;
+	line-height: 22px;
+	color: #333;
+	font-size:12px;
+	background: url("/static/img/bgdNavInvoicesActive2.gif") top right no-repeat;
+	text-decoration:none;
+}
+#navInvoicesSub li a:hover
+{
+}
+#navInvoicesSub li a span:hover
+{
+}
+
+/* ----------------------------------------------- ----------------------------------------------- */
+#navInvoicesSub 
+{
+	clear: both;
+	float: left;
+	margin: 2px 0 0;
+	padding: 0 10px;
+	
+}
+#navInvoicesSub li 
+{
+	float: left;
+	margin: 0 1px 0 0;
+	padding: 0;
+	line-height: 22px;
+	background: url("/static/img/bgdNavInvoicesActive1.gif") top left no-repeat;
+	font-size:12px;
+}
+#navInvoicesSub li a:link, #navInvoicesSub li a:visited 
+{
+	float: left;
+	margin: 0;
+	padding: 0 12px;
+	line-height: 22px;
+	color: #333;
+	font-size:12px;
+	background: url("/static/img/bgdNavInvoicesActive2.gif") top right no-repeat;
+	text-decoration:none;
+}
+/* ----------------------------------------------- ----------------------------------------------- */
+.brown
+{
+  	background-color:#ffffff;
+}
+.blue
+{
+  	background-color:#ffffff;
+}
+.green
+{
+  	background-color:#ffffff;
+}
+.invoices li#green 
+{
+	margin: 0 1px 0 0;
+	background: url("/static/img/bgdNavInvoicesActive1Green.gif") top left no-repeat;
+}
+.invoices #green span 
+{
+	float: left;
+	margin: 0;
+	padding: 0 12px;
+	line-height: 22px;
+	font-weight: bold;
+	color: #333;
+	background: url("/static/img/bgdNavInvoicesActive2Green.gif") top right no-repeat;
+}
+.invoices li#blue 
+{
+	margin: 0 1 0 0;
+	background: url("/static/img/bgdNavInvoicesActive1Blue.gif") top left no-repeat;
+}
+.invoices #blue span 
+{
+	float: left;
+	margin: 0;
+	padding: 0 12px;
+	line-height: 22px;
+	font-weight: bold;
+	color: #333;	
+	background: url("/static/img/bgdNavInvoicesActive2Blue.gif") top right no-repeat;
+}
+.invoices li#brown 
+{
+	margin: 0 1px 0 0;
+	background: url("/static/img/bgdNavInvoicesActive1Green.gif") top left no-repeat;
+}
+.invoices #brown span 
+{
+	float: left;
+	margin: 0;
+	padding: 0 12px;
+	line-height: 22px;
+	font-weight: bold;
+	color: #333;
+	background: url("/static/img/bgdNavInvoicesActive2Green.gif") top right no-repeat;
+}
+
+/*************************************************** rounded corner style*************************************/
+.container {background:#EAF9FC; color:#5CCCCD; margin:15px 15px 15px 15px;}
+.containerIssue {background:#EAF9FC; color:gray;  margin:15px 15px 15px 15px;}
+.rtop, .rbottom{display:block; background:#F7FCFC}
+.rtop *, .rbottom *{display: block; height: 1px; overflow: hidden; background:#EAF9FC}
+
+.subcontainerIssue {background:#D1EFEA; color:#5CCCCD;  margin:15px 15px 15px 15px;}
+.subrtop, .subrbottom{display:block; background:#EAF9FC;}
+.subrtop *, .subrbottom *{display: block; height: 1px; overflow: hidden; background:#D1EFEA;}
+
+.r1{margin: 0 5px}
+.r2{margin: 0 3px}
+.r3{margin: 0 2px}
+.r4{margin: 0 1px; height: 2px}
+
+#lbl
+{
+color:green;
+text-align:left;
+font-size:10pt;
+}
+
+#slider {
+position: absolute;
+background-image:url(slider.png);
+background-repeat:no-repeat;
+background-position: bottom;
+width: 300px;
+height: 159px;
+margin-top: -141px;
+}
+#slider img {
+border: 0;
+}
+#sliderContent {
+margin: 50px 0 0 50px;
+position: absolute;
+text-align:center;
+background-color:#FFFFCC;
+color:#333333;
+font-weight:bold;
+padding: 10px;
+}
+#header {
+margin: 0 auto;
+width: 600px;
+background-color: #F0F0F0;
+height: 200px;
+padding: 10px;
+}
+#openCloseWrap {
+position:absolute;
+margin: 143px 0 0 120px;
+font-size:12px;
+font-weight:bold;
+}
+#openCloseMenu {
+position:absolute;
+margin: 143px 0 0 120px;
+font-size:12px;
+font-weight:bold;
+}

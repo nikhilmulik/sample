@@ -1,0 +1,178 @@
+{% load static from staticfiles %}
+{% load hotkeys %}
+
+<head>
+	{% setup_hotkeys %}
+
+	<title> Charts </title>
+
+	<link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+	<link type="text/css" rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />
+	<link type="text/css" rel="icon" href="{% static 'img/favicon_new.ico' %}" />
+	<script type="text/javascript" src="{% static 'js/jquery.min.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/application.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-transition.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-alert.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-modal.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-dropdown.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-scrollspy.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-tab.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-tooltip.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-popover.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-button.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-collapse.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-carousel.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-typeahead.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/jquery.blockUI.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-datepicker.js' %}"  ></script>
+
+
+    <script type="text/javascript" src="http://www.google.com/jsapi"></script> 
+    <script type="text/javascript"> 
+      google.load('visualization', '1', {packages: ['charteditor']});
+    </script> 
+        
+    <script type="text/javascript" src='https://www.google.com/jsapi?autoload={"modules":[{"name":"visualization","version":"1"}]}'></script>
+    
+
+    
+    
+    <script type="text/javascript"> 
+    var wrapper;
+
+    function init() {
+      wrapper = new google.visualization.ChartWrapper({
+        dataSourceUrl: 'https://spreadsheets.google.com/spreadsheet/tq?key=tnxuU73jT7eIL-aZke85e3A&pub=1&range=A1:E13',
+        containerId: 'visualization',
+        chartType: 'LineChart'
+      });
+      wrapper.draw();
+    }
+    function openEditor() {
+      // Handler for the "Open Editor" button.
+
+      
+      var editor = new google.visualization.ChartEditor();
+      google.visualization.events.addListener(editor, 'ok',
+        function() {
+          wrapper = editor.getChartWrapper();
+          wrapper.draw(document.getElementById('visualization'));
+      });
+      editor.openDialog(wrapper);
+    }
+    
+    google.setOnLoadCallback(init);
+	google.load("visualization", "1", {
+		packages : ["corechart"]
+	});
+
+
+//	google.setOnLoadCallback(drawChart);
+	
+	
+	function drawChart(json) {
+//		json = ("{{ json|safe }}");
+//		alert(json);
+		var data = google.visualization.arrayToDataTable("json");
+		var options = {
+			title : 'Performance',
+			hAxis : {
+				title : 'Date',
+				  tooltip: {textStyle: {bold: false}},
+				  width: 500,
+				  height: 300,
+				  pointSize: 4,
+				  legend : 'top', 
+				  vAxes: {0: {title: "Volume",titleTextStyle: {italic: false}, minValue: 80} },
+				  hAxis: {title: "Date",titleTextStyle: {italic: false} , slantedText: true},
+	              series: {0: {type: "bars", targetAxisIndex: 0},1: {type: "bars"},2: {type: "bars"}}
+
+			}
+		};
+		var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+		chart.draw(data, options);
+	}
+	
+
+
+function drawChart(json) {
+//	json = ("{{ json|safe }}");
+//	alert(json);
+	
+   
+    
+    var data = json;
+    
+	var view = new google.visualization.DataView(data);
+	view.setColumns([0,1]);
+	view.setRows(data.getFilteredRows([{column:3, value: thisCoach}]));
+	var newchart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+	
+	var options = {
+
+			  width: 500,
+			  height: 300,
+			  pointSize: 4,
+			  legend :{
+				  position:'buttom'
+		}
+	};
+	newchart.draw(data, options);
+}
+
+
+
+	</script>
+</head>
+
+
+<body id="selected_mawb" >
+	<div>
+		{% include "process_it/toolbar.html" %}
+	</div>
+
+ 
+
+<div style="margin:35px 0px 35px 35px; ">
+{% load chart_tags %}
+{% chart %}
+    http://chart.googleapis.com/chart
+   &chf=a,s,000000|bg,lg,270,514D4D,0,000000,1|c,lg,270,454545,0,000000,1
+   &chxl=1:|7/2/13|8/2/13|9/2/13|10/2/13
+   &chxr=1,0,5
+   &chxs=0,D8D8D8,11.5,0,lt,FFFF00|1,D2C9C9,11.5,0,lt,F0FF44
+   &chxtc=1,2
+   &chxt=y,x
+   &chbh=a,5,30
+   &chs=680x425
+   &cht=bvg
+   &chco=4983F3,E3F633
+   &chd=t:2,50,60,80|50,60,75,40
+   &chdl=Processed Masters|Pending Masters
+   &chdlp=b
+   &chp=0
+   &chg=0,10,5,0
+   &chma=20,10,5,35
+   &chtt=Progress+and+Pending+Report++
+   &chts=D7D7D7,17.5
+{% endchart %}
+</div>
+	
+					
+<button onclick="drawChart({{json|safe}})">Test</button>
+
+<p>json:{{json|safe}}</p>
+
+
+
+  <div id="chart_div" style="width: 600px; height: 350px; border: 2px solid blue;"> </div>
+    <br><hr><br>
+
+<!--
+    <input type='button' onclick='openEditor()' value='Open Editor'> 
+    <div id='visualization' style="width:600px;height:400px"> 
+--></div>
+
+</body>
+

@@ -1,0 +1,197 @@
+{% load static from staticfiles %}
+{% load hotkeys %}
+<head>
+	{% setup_hotkeys %}
+	<title>Performance Evaluation</title>
+	<link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+	<link type="text/css" rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />
+	<link type="text/css" rel="stylesheet" href="{% static 'css/select2.css' %}" />
+	<link type="text/css" rel="icon" href="{% static 'img/favicon_new.ico' %}" />
+	<script type="text/javascript" src="{% static 'js/jquery.min.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/application.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-transition.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-alert.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-modal.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-dropdown.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-scrollspy.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-tab.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-tooltip.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-popover.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-button.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-collapse.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-carousel.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-typeahead.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/jquery.blockUI.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/select2.js' %}"  ></script>
+	<style type="text/css">
+		#ui-datepicker-div {
+			display: none;
+		}
+	</style>
+	<script>
+		$(document).ready(function() {
+			$("#usersList").select2();
+			$("#stationOfAi").select2();
+		});
+	</script>
+	<script type="text/javascript">
+		$(function() {
+			$("#fromDateFilter").datepicker({
+				altField : '#fromDateFilter',
+				altFormat : 'yy-mm-dd',
+				onSelect : function() {
+					$("#fromDateFilter").focus();
+				}
+			});
+			$("#toDateFilter").datepicker({
+				altField : '#toDateFilter',
+				altFormat : 'yy-mm-dd',
+				onSelect : function() {
+					$("#toDateFilter").focus();
+				}
+			});
+		});
+	</script>
+	<script>
+		function clear() {
+			document.getElementById("fromDateFilter").value = "";
+			document.getElementById("toDateFilter").value = "";
+		}
+	</script>
+	
+<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
+<script type="text/javascript"> 
+  google.load('visualization', '1', {packages: ['charteditor']});
+</script> 
+    
+<script type="text/javascript" src='https://www.google.com/jsapi?autoload={"modules":[{"name":"visualization","version":"1"}]}'></script>
+
+	
+	
+</head>
+
+<body id="server_response" onactivate="">
+	<div>
+		{% include "process_it/toolbar.html" %}
+	</div>
+
+	<div align="center" style="background-color:#77C646; padding: 12px; ">
+		<header >
+			<h1 style="color: white; text-shadow: 1px 1px 1px black">Performance Evaluation</h1>
+		</header>
+	</div>
+
+	<hr>
+	<hr>
+
+
+	<div  style="float:left ; margin: 30px 0px 0px 30px;     ">
+
+		<table cellpadding="10px" >
+			<tr>
+				<td> From: </td>
+				<td>
+				<input id="fromDateFilter" name="fromDateFilter" class="styleCursorType" type="text" style="height: 30px; text-align:center;  ">
+				</td>
+				<td> To: </td>
+				<td>
+				<input id="toDateFilter" name="toDateFilter" class="styleCursorType" type="text" style="height: 30px; text-align: center">
+				</td>
+				<!--	<td> <input style="cursor:pointer" id="submitFilterButton" value="Go" type="button" onclick="datasourceCount($('#fromDateFilter').val(),$('#toDateFilter').val());"></td>		-->
+			</tr>
+			<tr>
+				<td>User: </td>
+				<td>
+				<select style="width: 160px; height: 30px" id="usersList">
+
+					{% for d in dnames %}
+					<option value="{{d}}">{{d}}</option>
+					{% endfor %}
+				</select></td>
+				<td>Station: </td>
+				<td>
+				<select style="width: 130px; height: 30px; font-size: 15px" id="stationOfAi" >
+					<option value="LAX" >LAX</option>
+					<option value="DFW">DFW</option>
+					<option value="IAH">IAH</option>
+					<option value="SFO">SFO</option>
+				</select></td>
+			</tr>
+			<tr style="margin-top: 20px">
+				<td></td>
+				<td>
+				<button type="submit" class="btn btn-primary" onclick="individualProcess();  " style="width: 75px">
+					Submit
+				</button></td>
+				<td></td>
+				<td>
+				<button class="btn btn-primary" type="reset" onclick="clear();" style="width: 75px">
+					Clear
+				</button></td>
+			</tr>
+		</table>
+	</div>
+
+	<div id="reptable" style="float:right ; margin: 40px 50px 0px 0px; " >
+		<table class="table-condensed" id="logTable" border="1px bolid black" >
+			<tr style="background-color:#E6E6E6 ">
+				<th style="padding: 10px">Date</th>
+				<th style="padding: 10px">Name of Processor</th>
+				<th style="padding: 10px">Station</th>
+				<th style="padding: 10px">No. of AI Created</th>
+				<th style="padding: 10px">No. of shipments COBed in Recovery </th>
+				<th style="padding: 10px">Total COBed</th>
+			</tr>
+			<tr>
+				<td id="fdate0" ></td>
+				<td id="fdate1" ></td>
+				<td id="fdate2" ></td>
+				<td id="fdate3" ></td>
+				<td id="fdate4" ></td>
+				<td id="fdate5" ></td>
+								
+			</tr>
+
+
+
+
+		</table>
+<a onclick="send_mawb('performEvalutation');" href="#">Download Report</a>
+
+	</div>
+
+<!--<p id="fdate6" > </p>-->
+
+
+
+
+
+
+<div id="chart_div" style="width: 750px; height: 400px; position: relative; float: right; margin:100px 200px 0px 0px; " align="center"> </div>	
+
+
+
+
+<SCRIPT>
+function fade(div_id, button) {
+	if(button.value == 'FadeOut') {
+		$('#'+div_id).fadeOut('slow');
+		button.value = 'FadeIn';
+	}
+	else {
+		$('#'+div_id).fadeIn('slow');
+		button.value = 'FadeOut';
+	}
+}
+$('#reptable').fadeOut(2);
+</SCRIPT>
+
+
+
+
+
+
+
+</body>
+

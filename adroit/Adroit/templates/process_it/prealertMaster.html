@@ -1,0 +1,137 @@
+{% load static from staticfiles %}
+<head>
+	<title>
+		Adroit
+	</title>
+	<link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+	<link type="text/css" rel="icon" href="{% static 'img/favicon_new.ico' %}" />
+	<link type="text/css" rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />
+	<!-- <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}" /> -->
+	<link type="text/css" rel="stylesheet" href="{% static 'css/custom.css' %}" />
+	
+	<script type="text/javascript" src="{% static 'js/jquery-1.8.2.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/application.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-transition.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-alert.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-modal.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-dropdown.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-scrollspy.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-tab.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-tooltip.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-popover.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-button.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-collapse.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-carousel.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-typeahead.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/jquery.blockUI.js' %}"  > </script>
+
+	
+	<script type="text/javascript">
+		$(function ()
+		{
+			$("#preAlertReceivedDateFrom").datepicker({altField  : '#preAlertReceivedDateFrom', altFormat : 'dd-mm-yy', onSelect: function() {$("#preAlertReceivedDateFrom").focus();}});
+			$("#preAlertReceivedDateTo").datepicker({altField  : '#preAlertReceivedDateTo',altFormat : 'dd-mm-yy', onSelect: function() {$("#preAlertReceivedDateTo").focus();}});
+			$("#etaDateFrom").datepicker({altField  : '#etaDateFrom',altFormat : 'dd-mm-yy', onSelect: function() {$("#etaDateFrom").focus();}});
+			$("#etaDateTo").datepicker({altField  : '#etaDateTo',altFormat : 'dd-mm-yy', onSelect: function() {$("#etaDateTo").focus();}});
+			$("#cobDateFrom").datepicker({altField  : '#cobDateFrom',altFormat : 'dd-mm-yy', onSelect: function() {$("#cobDateFrom").focus();}});
+			$("#cobDateTo").datepicker({altField  : '#cobDateTo', altFormat : 'dd-mm-yy', onSelect: function() {$("#cobDateTo").focus();}});	
+		}
+	);
+	
+	$(document).ready(function(){
+	  $('#addNew').click(function(){
+	    $('#mawbNum').focus();
+	  });
+	});
+	
+	</script>
+	<style> 
+		input
+		{
+		
+		box-shadow: 0 0 0 transparent inset;
+		}
+	</style>
+	
+</head>
+<body onload="verticalMenu();$('#openCloseMenu').hide();$('#accordion-mine > li > div').click(function(){if(false == $(this).next().is(':visible')) {$('#accordion-mine ul').slideUp(300);}$(this).next().slideToggle(300);});$('#accordion-mine ul:eq(1)').show();">
+	<div>
+		<div>
+			{% include "process_it/toolbar.html" %}
+		</div>
+			<div id="openCloseMenu" style="border-right:thin solid #D1D1D1;width: 10%;height: 85.8%;float:left;margin-left:10px;margin-right:0px;">
+				<ul id="accordion-mine" style="margin-left: -5px;">
+				    <li><div onclick="window.location='/process_it/bbPrealert/'" style="background: #36a9e1; color: white">Pre-Alert Processing</div>
+				        <ul class="nav nav-list">
+							  <li ><a id='addNew' href="#myModal" data-toggle="modal">Add MAWB</a></li>
+							  <li ><a id='addOld' href="#myModalRebook" data-toggle="modal">Re-book Old</a></li>
+							  <li ><a href="#" onclick=refreshscreen(); data-toggle="modal">Refresh</a></li>
+							  <!--<li ><a id='uploadBO' href="#myModalUpload" data-toggle="modal">Upload BO</a></li>-->
+							  <li><a href="#" onclick=send_masters('delete');>Delete </a></li>
+							  <li><a href="#" onclick=send_mawb("prealerttoexcel");>Download </a></li>
+							  <li><a href="#" onclick=get_selected_mawb(); onload=clear();>View Selected Masters</a></li>
+							  <li id="create_ai_file_container"><a href="#" onclick="create_ai_file();">Create AI File </a></li>
+							  <li id="get_console_container"><a href="#" onclick="get_consol_no();">Get Consol #</a></li>
+							  <li id="update_remarks_container"><a href="#" onclick="update_remarks();">Update Remarks</a></li>
+							  <li >Total Rows {{arr|length}}</li>
+						</ul>
+							<input type="hidden" id="selected_mawb" name="selected_mawb" value="">
+				    </li>
+				    <li><div onclick="window.location='/process_it/bbPrealertMaster/'" style="background: #36a9e1; color: white">Pre-Alert Master Sheet</div>
+				        <ul class="nav nav-list">
+							  <li><a href="#" onclick=send_mawb("exporttoexcel");>Download Recovery Sheet </a></li>
+							  <li><a href="#" onclick=send_masters('complete');>Complete </a></li>
+							  <li><a href="#" onclick=send_masters('moveBack');>Move To Pre Alert Processing</a></li>		
+							  
+							 <li><a href="#" onclick=get_selected_mawb();>View Selected MAWB's</a></li>
+							<li id="fnb_process"><a href="#" onclick="fnb_process('DFW','master');">FNB Process</a></li>		
+										  
+							  			  
+						</ul>
+				    </li>
+				    <div style="background: #36a9e1; color: white">Class credentials</div>					 
+							User ID:<input type='text' id='class_uname' value="{{class_uname}}" />
+							Password:<input type='password' id='class_pass' value="{{class_pass}}" />
+							<input type='button' value='Login' onclick="ajaxWithSerialize('y','taskDiv','/process_it/setClassCredentials/','class_uname='+$('#class_uname').val()+'&class_pass='+$('#class_pass').val());"/>
+				</ul>
+			</div>
+			
+		<div >
+			<!--<table width="89%">
+				<tr>
+					<td style="border-bottom:thin" bgcolor="#CFDBEC" align="right">
+						<font size="2">
+						Page {{ arr.number }} of {{ arr.paginator.num_pages }}
+						</font>
+						{% if arr.has_previous %}
+						    <a href="?page={{ arr.previous_page_number }}"><img src="{% static 'img/previous.png' %}" /></a>
+						{% endif %}
+						{% if arr.has_next %}
+						     <a href="?page={{ arr.next_page_number }}"><img src="{% static 'img/next.png' %}" /></a>
+						{% endif %}				
+					</td>
+				</tr>
+			</table>-->	
+			 	{% block contentmaster %}{% endblock %}
+			  <!--<table width="90%">
+				<tr>
+					<td bgcolor="#CFDBEC" align="left">
+						<font size="2">Page {{ arr.number }} of {{ arr.paginator.num_pages }}</font>
+				
+						{% if arr.has_previous %}
+						    <a href="?page={{ arr.previous_page_number }}"><img src="{% static 'img/previous.png' %}" /></a>
+						{% endif %}
+						{% if arr.has_next %}
+						     <a href="?page={{ arr.next_page_number }}"><img src="{% static 'img/next.png' %}" /></a>
+						{% endif %}
+					</td>
+				</tr>
+			</table>-->
+		</div>
+		
+		<div>
+			{% include "process_it/footer.html" %}
+		</div>
+	</div>
+</body>

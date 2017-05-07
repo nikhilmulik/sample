@@ -1,0 +1,124 @@
+{% load static from staticfiles %}
+{% load hotkeys %}
+
+<head>
+	{% setup_hotkeys %}
+
+	<title>Display Logs</title>
+
+	<link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+	<link type="text/css" rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />
+	<link type="text/css" rel="icon" href="{% static 'img/favicon_new.ico' %}" />
+	<script type="text/javascript" src="{% static 'js/jquery.min.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/application.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-transition.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-alert.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-modal.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-dropdown.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-scrollspy.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-tab.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-tooltip.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-popover.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-button.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-collapse.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-carousel.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-typeahead.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/jquery.blockUI.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-datepicker.js' %}"  ></script>
+
+	
+
+</head>
+<body id="server_response" onactivate="">
+	<div>
+			{% include "process_it/toolbar.html" %}
+		</div>
+
+
+
+	<div align="center" style="background-color:#36a9e1; padding: 12px; ">
+		<header >
+			<h1 style="color: white; text-shadow: 1px 1px 1px black">Display Logs</h1>
+		</header>
+	</div>
+
+	<hr>
+
+	<div class="input-append" style="margin-left: 50px">
+		<button class="btn" value="Search"  id="mawbsearch" onclick="logMawbSearch('search')">
+			Search
+		</button>
+		<input type="text"  class="input-medium search-query" id="searchMawbNum" placeholder="Search Mawb" style="height: 28px" autocomplete="off" />
+		<button class="btn" value="Search"  id="mawbAll" onclick="logMawbSearch('all')" style="margin-left: 20px; ">
+			View All Mawb
+		</button>
+
+		<div class="input-append" style="margin-right: 50px; float: right">
+		
+			<select style="width: 130px; height: 28px" id="mawListDwStation">
+			  <option value="LAX">LAX</option>
+			  <option value="SFO">SFO</option>
+			  <option value="DFW">DFW</option>
+			  <option value="IAH">IAH</option>
+			</select>
+			<button class="btn" value="Search" title="Search Records for MAWB" id="mawListDownload" title="Master's with their Console & Date for AI Creation Processing" onclick="logMawbSearch('mawbdate')" >
+				Mawb by Date
+			</button>
+	
+			<input id="mawListDwDate"  name="mawListDwDate"  type="text" style="width: 130px; height: 28px" placeholder="YYYY-MM-DD">
+			
+			
+		</div>
+
+	</div>
+	<hr>
+<div class="pagination" style="border-width: 1px 1px 1px 1px; position: absolute; width: 100%">
+    <span class="step-links">
+        {% if data.has_previous %}
+            <a href="?page={{ data.previous_page_number }}" style=" margin:-14px 0px 0px 35px; border-width: 1px 1px 1px 1px;"> &#60;&#60; previous</a>
+        {% endif %}
+
+        <span class="current" style="margin-left: 76%">
+            Page {{ data.number }} of {{ data.paginator.num_pages }}.
+        </span>
+
+        {% if data.has_next %}
+            <a href="?page={{ data.next_page_number }}" style="float: right; margin:-16px 54px 0px 0px; border-width: 1px 1px 1px 1px;" >next &#62;&#62; </a>
+        {% endif %}
+    </span>
+</div>
+	
+
+
+
+	<div style="width: 80%; margin: 0 auto; "  >
+
+		<table class="table table-hover" id="logTable" >
+			<tr style="background-color:#E6E6E6 ">
+				<th style="padding: 10px">ID</th>
+				<th style="padding: 10px">User Name</th>
+				<th style="padding: 10px">Mawb #</th>
+				<th style="padding: 10px">Date</th>
+				<th style="padding: 10px">Time</th>
+				<th style="padding: 10px">Operation</th>
+			</tr>
+			{% for d in data %}
+
+			{% for i in d %}
+			{% if forloop.counter0|divisibleby:6 %}
+			<tr>
+				{% endif %}
+
+				<td style="padding: 3px" >{{ i }}</td>
+
+				{% endfor %}
+				{% endfor %}
+		</table>
+
+	</div>
+
+
+
+</body>
+

@@ -1,0 +1,9 @@
+*.pyc
+*.pyo
+*~
+*.sqlite
+.project
+.pydevproject
+*.swp
+*.bak
+main/local_settings.py

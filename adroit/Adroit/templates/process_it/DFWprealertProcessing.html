@@ -1,0 +1,511 @@
+{% load static from staticfiles %}
+{% load process_it_custom %}
+{% load hotkeys %}
+<head>
+	<title> Adroit </title>
+	{% setup_hotkeys %}
+	<link type="text/css" rel="icon" href="{% static 'img/favicon_new.ico' %}" />
+
+	<link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+	<link type="text/css" rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />
+	<link type="text/css" rel="stylesheet" href="{% static 'css/jquery.handsontable.css' %}" />
+	<!--   <link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}" />	-->
+	<link type="text/css" rel="stylesheet" href="{% static 'css/custom.css' %}" />
+	<script type="text/javascript" src="{% static 'js/jquery.min.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/application.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-transition.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-alert.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-modal.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-dropdown.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-scrollspy.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-tab.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-tooltip.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-popover.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-button.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-collapse.js' %}" ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-carousel.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-typeahead.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/jquery.handsontable.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/jquery.tablesorter.min.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/samples.js' %}"  ></script>
+	<script type="text/javascript" src="{% static 'js/highlight.pack.js' %}"  ></script>
+	<style type="text/css">
+		#ui-datepicker-div {
+			display: none;
+		}
+	</style>
+	<script type="text/javascript" src="{% static 'js/jquery.blockUI.js' %}"  ></script>
+
+	<script type="text/javascript">
+		$(function() {
+			$("#etaDate").datepicker({
+				altField : '#etaDate',
+				altFormat : 'mm-dd-y'
+			});
+			$("#cobDate").datepicker({
+				altField : '#cobDate',
+				altFormat : 'mm-dd-y'
+			});
+			$("#preAlertReceivedDate").datepicker({
+				altField : '#preAlertReceivedDate',
+				altFormat : 'mm-dd-y'
+			});
+			$("#lastUpdatedDateFromFilter").datepicker({
+				altField : '#lastUpdatedDateFromFilter',
+				altFormat : 'mm-dd-y',
+				onSelect : function() {
+					$("#lastUpdatedDateFromFilter").focus();
+				}
+			});
+			$("#lastUpdatedDateToFilter").datepicker({
+				altField : '#lastUpdatedDateToFilter',
+				altFormat : 'mm-dd-y',
+				onSelect : function() {
+					$("#lastUpdatedDateToFilter").focus();
+				}
+			});
+			$("#etaDateFromFilter").datepicker({
+				altField : '#etaDateFromFilter',
+				altFormat : 'mm-dd-y',
+				onSelect : function() {
+					$("#etaDateFromFilter").focus();
+				}
+			});
+			$("#etaDateToFilter").datepicker({
+				altField : '#etaDateToFilter',
+				altFormat : 'mm-dd-y',
+				onSelect : function() {
+					$("#etaDateToFilter").focus();
+				}
+			});
+
+		});
+
+		$(document).ready(function() {
+			$('#addNew').click(function() {
+				$('#mawbNum').focus();
+			});
+		});
+	</script>
+
+	<script>
+		var descriptionRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+			var escaped = Handsontable.helper.stringify(value);
+			escaped = strip_tags(escaped, '<input><img><a>');
+			//be sure you only allow certain HTML tags to avoid XSS threats (you should also remove unwanted HTML attributes)
+			//alert('...instance is...'+instance+'...td is...'+td[0]+'...row is...'+row+'...col is...'+col+'...prop is...'+prop+'...value is...'+value+'...cellprop is...'+cellProperties);
+			td.innerHTML = escaped;
+			td.className = 'styleColumnBorder styleWidth35p';
+			return td;
+		};
+
+		var stationRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth26p';
+
+			return td;
+		};
+		var mawbNumRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth60p mawbNum';
+			return td;
+		};
+		var consoleNumberRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth34p';
+			return td;
+		};
+		var customerRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth42p';
+			return td;
+		};
+		var itInfoRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth50p';
+			return td;
+		};
+
+		var flightCodeRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth25p';
+			return td;
+		};
+		var flightNumRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth32p';
+			return td;
+		};
+		var etaDateRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth40p';
+			return td;
+		};
+		var etaTimeRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth34p';
+			return td;
+		};
+		var shipmentStatusRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth38p';
+			return td;
+		};
+		var trackSourceRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth30p';
+			return td;
+		};
+		var speakWithRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth41p';
+			return td;
+		};
+		var pmcOrLooseRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth50p';
+			return td;
+		};
+		var slacRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth26p';
+			return td;
+		};
+		var chgWeightRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth30p';
+			return td;
+		};
+		var remarksInClassRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth80p';
+			return td;
+		};
+		var oneFStatusRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth40p';
+			return td;
+		};
+		var lastUpdatedDateRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth40p lastUpdatedDate';
+			return td;
+		};
+		var lastUpdatedTimeRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth34p lastUpdatedTime';
+			return td;
+		};
+		var lastUpdatedByUserRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth55p lastUpdatedByUser';
+			return td;
+		};
+		var updateTodayFlag = function(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth55p lastUpdatedByUser';
+			return td;
+		};
+		var spProStatusRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+			Handsontable.TextCell.renderer.apply(this, arguments);
+			td.className = 'styleColumnBorder styleWidth51p';
+			return td;
+		};
+				
+		
+
+		var data = [];
+		{% for mbl in arr %}
+		data.push({
+
+			isActive : "<input type='hidden' id='{{mbl.mawbNum}}_actionType' value='update' ><input type='hidden' id='{{mbl.mawbNum}}_mawb_id' value='{{mbl.id}}' >		  	<input type='checkbox' id='{{mbl.mawbNum}}_chkbox' onchange=check_uncheck('{{mbl.mawbNum}}');>		  				<img id='{{mbl.mawbNum}}_update' class='styleCursorType' title='Click here to save!' src={% static 'img/save.gif' %} onclick=new_addMawbFun('{{mbl.mawbNum}}','update');  />		  				{% if mbl.createAIStatus == 1 %}							<img  id='{{mbl.mawbNum}}_createAI' src={% static 'img/ai_pro.gif' %} title='{{mbl.createAIDesc}}' />						{% else %}{% if mbl.createAIStatus == 3 %}							<img id='{{mbl.mawbNum}}_createAI' src={% static 'img/done.gif' %} title='{{mbl.createAIDesc}}'  />						{% else %}{% if mbl.createAIStatus == 2 %}							<img id='{{mbl.mawbNum}}_createAI' src={% static 'img/error.gif' %} title='{{mbl.createAIDesc}}' />		{% else %}{% if mbl.createAIStatus == 4 %}		<img id='{{mbl.mawbNum}}_createAI' src={% static 'img/not_exist.gif' %} title='{{mbl.createAIDesc}}' />		{% else %}		<img id='{{mbl.mawbNum}}_createAI' src={% static 'img/ai.png' %} title='AI pending!!'  />						{% endif %}{% endif %}{% endif %}{% endif %} <img class='styleCursorType' id='{{mbl.mawbNum}}_track' title='Track this master!' src={% static 'img/track.png' %} onclick=new_track_mawb('{{mbl.mawbNum}}'); /><div id='load_resp'></div></td><input type='hidden' id='{{mbl.mawbNum}}_updateTodayFlag' value='{{mbl.updateTodayFlag}}' ><input type='hidden' id='{{mbl.mawbNum}}_remarksInClass' value='{{mbl.remarksInClass}}' >        ",
+			// <img class='styleCursorType' style='margin:-3px 2px 0px 3px; float: right;' id='' title='Add Row.' src={% static 'img/plus.gif' %} onclick=showtab('myTable');return false; />
+
+			station : "{% if mbl.station != None %}{{ mbl.station }}{% endif %} ",
+			mawbNum : "{% if mbl.mawbNum != None %}{{ mbl.mawbNum }}{% endif %}",
+			consoleNumber : "{{ mbl.consoleNumber|emptyString }}",
+			customer : "{{ mbl.customer|emptyString }}",
+			itInfo : "{{ mbl.itInfo|emptyString }}",
+			flightCode : "{% if mbl.flightCode != None %}{{ mbl.flightCode }}{% endif %}",
+			flightNum : "{% if mbl.flightNum != None %}{{ mbl.flightNum }}{% endif %}",
+			etaDate : "{{mbl.etaDate|date:'m-d-y'}}",
+			etaTime : "{{mbl.etaTime|time:'Hi'}}",
+			shipmentStatus : "{{mbl.shipmentStatus|emptyString }}",
+			trackSource : "{{mbl.trackSource|emptyString }}",
+			speakWith : "{{mbl.speakWith|emptyString }}",
+			pmcOrLoose : "{{mbl.pmcOrLoose|emptyString }}",
+			slac : "{{mbl.slac|emptyString }}",
+			chgWeight : "{{mbl.chgWeight|emptyString }}",
+			remarksInClass : "{% if mbl.remarksInClass != None %}{{ mbl.remarksInClass|splitRemark }}{% endif %}",
+			oneFStatus : "{{mbl.oneFStatus|emptyString }}",
+			lastUpdatedDate : "{{mbl.lastUpdatedDate|date:'m-d-y'}}",
+			lastUpdatedTime : "{{mbl.lastUpdatedTime|time:'Hi'}}",
+			lastUpdatedByUser : "{{mbl.lastUpdatedByUser|emptyString }}",
+			oneFStatusComment : "{{mbl.oneFStatusComment|emptyString }}",
+			spProStatus : "{{mbl.spProStatus|emptyString }}",
+
+		});
+		{% endfor %}
+		/*	data.push({
+
+		 isActive: "--",
+		 station: "--",
+		 mawbNum: "--",
+		 consoleNumber: "--",
+		 customer: "--",
+		 itInfo: "--",
+		 flightCode: "--",
+		 flightNum: "--",
+		 etaDate: "--",
+		 etaTime: "--",
+		 shipmentStatus:"--",
+		 trackSource: "--",
+		 speakWith: "--",
+		 pmcOrLoose: "--",
+		 slac: "--",
+		 chgWeight: "--",
+		 remarksInClass: "--",
+		 oneFStatus: "--",
+		 lastUpdatedDate: "--",
+		 lastUpdatedTime: "--",
+		 lastUpdatedByUser: "--",
+		 oneFStatusComment: "--",
+
+		 });
+		 */
+		if( {{ arr|length }} < 20)
+		{
+			var oneFStatusCommentRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+				Handsontable.TextCell.renderer.apply(this, arguments);
+				td.className = 'styleColumnBorder styleWidth157p';
+				return td;
+			};
+		}
+		else {
+			var oneFStatusCommentRenderer = function(instance, td, row, col, prop, value, cellProperties) {
+				Handsontable.TextCell.renderer.apply(this, arguments);
+				td.className = 'styleColumnBorder styleWidth146p';
+				return td;
+			};
+		}
+
+	</script>
+
+	<style>
+		input {
+			box-shadow: 0 0 0 transparent inset;
+		}
+		input.slectedRow {
+
+			/* round the corners */
+			-webkit-border-radius: 0px;
+			-moz-border-radius: 0px;
+			border-radius: 0px;
+			/* make it glow! */
+			-webkit-box-shadow: inset 0 0 2px #335B2F;
+			-moz-box-shadow: inset 0 0 2px #335B2F;
+			box-shadow: inner 0 0 2px #335B2F; /* some variation of blue for the shadow */
+		}
+		.table-hover tbody tr:hover th {
+			background-color: #D1D1D1;
+		}
+		.handsontable tr {
+			font-size: 12px;
+		}
+		.handsontable th, .handsontable td {
+			border-bottom: 1px solid #CCCCCC;
+			border-right: 1px solid #CCCCCC;
+			padding: 0 1px;
+		}
+		.handsontable table {
+			border-collapse: collapse;
+			border-spacing: 0;
+		}
+
+	</style>
+
+
+<script type="text/javascript">
+    function ChangeCase(elem)				// Function for upperCase Keys entered from the Keybord..
+    {
+        elem.value = elem.value.toUpperCase();
+    }
+</script>
+
+
+
+<script type="text/javascript" src="http://www.google.com/jsapi"></script> 
+<script type="text/javascript"> 
+  google.load('visualization', '1', {packages: ['charteditor']});
+</script> 
+    
+<script type="text/javascript" src='https://www.google.com/jsapi?autoload={"modules":[{"name":"visualization","version":"1"}]}'></script>
+
+
+
+
+</head>
+<body onload="clear_selected_mawb(),verticalMenu();$('#openCloseMenu').hide();$('#accordion-mine > li > div').click(function(){if(false == $(this).next().is(':visible')) {$('#accordion-mine ul').slideUp(300);}$(this).next().slideToggle(300);});$('#accordion-mine ul:eq(0)').show();tempBody();highLightTR();" >
+	<div>
+		<div>
+			{% include "process_it/toolbar.html" %}
+		</div>
+		<div id="openCloseMenu" style='border-right:thin solid #D1D1D1;width: 10%;height: 85.8%;float:left;margin-left:10px;margin-right:0px; text-shadow: 1px 1px 2px #66B3FF; font-family:"Candara"; font-size: 15px'>
+			<ul id="accordion-mine" style="margin-left: -10px;" >
+				<li>
+					<div onclick="window.location='/process_it/DFWbbPrealert/'" style="background: #36a9e1; color: white">
+						DFW Processing
+					</div>
+					<ul class="nav nav-list">
+						<!--<li ><a id='addNew' href="#myModal" data-toggle="modal">Add MAWB</a></li>-->
+
+						<li >
+							<a id='addOld' href="#myModalRebook" data-toggle="modal">Re-book Old</a>
+						</li>
+						<li >
+							<a href="#" onclick=refreshscreen(); data-toggle="modal">Reset Editing Sheet</a>
+						</li>
+						<!-- <li ><a id='uploadBO' href="#myModalUpload" data-toggle="modal">Upload BO</a></li>-->
+						<li>
+							<a href="#" onclick=send_masters('delete');>Delete </a>
+						</li>
+						<li>
+							<a href="#" onclick=send_mawb("export_excel_new")>Download Booking<img src="{% static 'img/Dw.png' %}" style="width:15; margin-left: 5px;"/></a>
+						</li>
+						<!-- <li><a href="#" onclick=send_mawb("prealerttoexcel");>Download </a></li>   -->
+						<li>
+							<a href="#" onclick=get_selected_mawb();>View Selected MAWB's</a>
+						</li>
+						<li id="create_ai_file_container">
+							<a href="#" onclick="create_ai_file();">Create AI File </a>
+						</li>
+						<li id="get_console_container">
+							<a href="#" onclick="get_consol_no();">Get Consol #</a>
+						</li>
+						<li id="update_remarks_container">
+							<a href="#" onclick="update_remarks();">Update Remarks</a>
+						</li>
+						
+						<li id="update_it_info">
+							<a href="#" onclick="itinfo_to_class();">IT Info to CLASS</a>
+						</li>	
+											
+						<li id="hawb_count">
+							<a href="#" onclick="hawb_count();">HAWB Count</a>
+						</li>
+
+						<li id="fnb_process">
+							<a href="#" onclick="fnb_process('DFW','');">FNB Process</a>
+						</li>
+
+						<li id="fetch_flightEta">
+							<a href="#" onclick="fetch_flightEta();">Fetch Flight and ETA</a>
+						</li>				
+				
+						<li>
+							<div class="" style="font-weight:normal; background: #F8F8F8 ;">
+								<a id="update_dispatch" onclick="update_dispatch()" >Update Dispatch </a>
+
+								<a class="" data-toggle="collapse" data-parent="" href="#collapseOne"> <img src="{% static 'img/alt.png' %}" style="width:15; margin-left: 20px" /> </a>
+
+								<div id="collapseOne" class="accordion-body collapse" style="padding: 0px 0px 0px 5px">
+
+									<input type="radio" name="dispatch_type" value="am1" id="am1">
+									<label for="am1"> AM1</label>
+									<input type="radio" name="dispatch_type" value="am2" id="am2">
+									<label for="am2"> AM2</label>
+									<input type="radio" name="dispatch_type" value="pm" id="pm">
+									<label for="pm"> PM</label>
+								</div>
+							</div>
+						</li>
+						<li >
+							<a id='charts' href="#myProgressChart" data-toggle="modal" onclick="charts()">Performance Charts</a>
+						</li>
+						
+						<li id="master_wright" >
+							<a href="#" onclick="master_wright('DFW');">Master Screen Update</a>
+						</li>
+						
+						
+						<li >
+							<i>Total Rows: {{arr|length}}</i>
+						</li>
+					</ul>
+					<input type="hidden" id="selected_mawb" name="selected_mawb" value="">
+				</li>
+				<li>
+					<div onclick="window.location='/process_it/DFWbbPrealertMaster/'" style="background: #36a9e1; color: white">
+						DFW Master Sheet
+					</div>
+					<ul class="nav nav-list">
+						<li>
+							<a href="#" onclick=send_mawb("exporttoexcel");>Download Recovery Sheet</a>
+						</li>
+						<li>
+							<a href="#" onclick=send_masters('complete');>Complete </a>
+						</li>
+						<li>
+							<a href="#" onclick=send_masters('moveBack');>Move To Pre Alert Processing</a>
+						</li>
+					</ul>
+				</li>
+				<li style="margin-left: 5px">
+				<div style="background: #36a9e1; color: white">
+					Class credentials
+				</div>
+				User ID:
+				<input type='text' id='class_uname' value="{{class_uname}}" />
+				Password:
+				<input type='password' id='class_pass' value="{{class_pass}}" />
+				<input type='button' value='Save' onclick="ajaxWithSerialize('n','setClassCredentials_response','/process_it/setClassCredentials/','class_uname='+$('#class_uname').val()+'&class_pass='+$('#class_pass').val());"/>
+				<span id="setClassCredentials_response"> </span>
+				</li>
+			</ul>
+			
+<!--<a target="_blank"   onclick="charts() ">Charts Link.....</a>
+<div id="chart_div" style="width: 600px; height: 350px; border: 2px solid blue;"> </div>	-->		
+		
+			
+		</div>
+
+		<div >
+			<!--<table width="89%">
+			<tr>
+			<td style="border-bottom:thin" bgcolor="#CFDBEC" align="right">
+			<font size="2">
+			Page {{ arr.number }} of {{ arr.paginator.num_pages }}
+			</font>
+			{% if arr.has_previous %}
+			<a href="?page={{ arr.previous_page_number }}"><img src="{% static 'img/previous.png' %}" /></a>
+			{% endif %}
+			{% if arr.has_next %}
+			<a href="?page={{ arr.next_page_number }}"><img src="{% static 'img/next.png' %}" /></a>
+			{% endif %}
+			</td>
+			</tr>
+			</table>-->
+			{% block content %}{% endblock %}
+			<!--  <table width="90%">
+			<tr>
+			<td bgcolor="#CFDBEC" align="left">
+			<font size="2">Page {{ arr.number }} of {{ arr.paginator.num_pages }}</font>
+
+			{% if arr.has_previous %}
+			<a href="?page={{ arr.previous_page_number }}"><img src="{% static 'img/previous.png' %}" /></a>
+			{% endif %}
+			{% if arr.has_next %}
+			<a href="?page={{ arr.next_page_number }}"><img src="{% static 'img/next.png' %}" /></a>
+			{% endif %}
+			</td>
+			</tr>
+			</table>-->
+		</div>
+
+		<!--  <div>
+		{% include "process_it/footer.html" %}
+		</div>	-->
+	</div>
+</body>

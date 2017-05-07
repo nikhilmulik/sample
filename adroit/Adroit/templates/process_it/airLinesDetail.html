@@ -1,0 +1,137 @@
+{% load static from staticfiles %}
+{% load process_it_custom %}
+<head>
+	<title>
+		Adroit
+	</title>
+	<link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+	<link type="text/css" rel="icon" href="{% static 'img/favicon_new.ico' %}" />
+	<link type="text/css" rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />
+<!-- 	<link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}" />	 -->
+	<link type="text/css" rel="stylesheet" href="{% static 'css/custom.css' %}" />
+	<script type="text/javascript" src="{% static 'js/jquery.min.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/application.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-transition.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-alert.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-modal.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-dropdown.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-scrollspy.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-tab.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-tooltip.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-popover.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-button.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-collapse.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-carousel.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-typeahead.js' %}"  > </script>	
+	
+	<script type="text/javascript" src="{% static 'js/jquery.handsontable.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/samples.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/highlight.pack.js' %}"  > </script>
+	
+	<script type="text/javascript">
+	var descriptionRenderer = function (instance, td, row, col, prop, value, cellProperties) {
+	  var escaped = Handsontable.helper.stringify(value);
+	  escaped = strip_tags(escaped, '<em><b><a>'); //be sure you only allow certain HTML tags to avoid XSS threats (you should also remove unwanted HTML attributes)
+	  td.innerHTML = escaped;
+	  return td;
+	};
+	
+	var data_lax = [];
+	{% for record in arr %}
+		  {% if record.stnName == 'LAX' %}
+		  data_lax.push({
+		  	
+		  	prefixNum: "{{ record.prefixNum|stripString }}",
+		    prefix: "{{ record.prefix|stripString }}",
+		    airlineName: "{{ record.airlineName|stripString }}",
+		    phoneNum: "{{ record.phoneNum|stripString }}",
+		    extNum: "{{ record.extNum|stripString }}",
+		    faxNum: "{{ record.faxNum|stripString }}",
+		    firms: "{{ record.firms|stripString }}",
+		    otherNum: "{{ record.otherNum|stripString }}",
+		    businessHrs: "{{ record.businessHrs|stripString }}",
+		    handlingAgent: "{{ record.handlingAgent|stripString }}",
+		   
+		    
+		  });
+		  
+		  {% endif %}
+	{% endfor %}
+	
+	var data_sfo = [];
+	{% for record in arr %}
+		  data_sfo.push({
+		  	
+		  	prefixNum: "{{ record.prefixNum|stripString }}",
+		    prefix: "{{ record.prefix|stripString }}",
+		    airlineName: "{{ record.airlineName|stripString }}",
+		    phoneNum: "{{ record.phoneNum|stripString }}",
+		    extNum: "{{ record.extNum|stripString }}",
+		    faxNum: "{{ record.faxNum|stripString }}",
+		    firms: "{{ record.firms|stripString }}",
+		    otherNum: "{{ record.otherNum|stripString }}",
+		    storagePyblTo: "{{ record.storagePyblTo|stripString }}",
+		    freeDays: "{{ record.freeDays|stripString }}",
+		    iscChgsPyblTo: "{{ record.iscChgsPyblTo|stripString }}",
+		    chgsPyblTo: "{{ record.chgsPyblTo|stripString }}",
+		    
+		  });
+	{% endfor %}
+	
+	
+	</script>
+	<style> 
+	
+	input
+	{
+			box-shadow: 0 0 0 transparent inset;
+	}
+	input.slectedRow
+	{
+		
+	    /* round the corners */
+	    -webkit-border-radius: 0px;
+	       -moz-border-radius: 0px;
+	            border-radius: 0px;
+	
+		
+	    /* make it glow! */
+	    -webkit-box-shadow: inset 0 0 2px #335B2F;
+	       -moz-box-shadow: inset 0 0 2px #335B2F;
+	            box-shadow: inner 0 0 2px #335B2F; /* some variation of blue for the shadow */
+		
+	}
+	.table-hover tbody tr:hover th {
+	  background-color: #D1D1D1;
+	}
+	
+	.handsontable th, .handsontable td {
+    border-bottom: 1px solid #CCCCCC;
+    border-right: 1px solid #CCCCCC;
+    padding: 0 1px;
+	}
+	.handsontable table {
+    border-collapse: collapse;
+    border-spacing: 0;
+	}
+}	
+	
+	</style>
+	
+</head>
+<body > <!--onload="laxDetailBody();"-->
+	<div>
+		<div>
+			{% include "process_it/toolbar.html" %}
+		</div>
+			
+		<div id="airLineTable" style="height:{{screen_height|add:'-380'}}px;overflow-y:auto;overflow-x:hidden;width:{{screen_width}}px;">
+			
+		</div>
+		
+		<div>
+			{% include "process_it/footer.html" %}
+		</div>
+	</div>
+</body>

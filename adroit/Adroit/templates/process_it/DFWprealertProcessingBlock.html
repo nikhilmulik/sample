@@ -1,0 +1,308 @@
+<!--
+DFWprealertProcessingBlock.html
+	1F Status is renamed to HAWB count,  but it will be referred by oneFStatus in ADROIT
+-->
+
+
+
+
+{% extends "process_it/DFWprealertProcessing.html" %}
+{% load static from staticfiles %}
+{% load process_it_custom %}
+
+{% block content %}
+<div id="myModalRebook" class="rebookmodal hide" >
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			&times;
+		</button>
+		<h3 align="center">Add re-booked master</h3>
+	</div>
+	<form name="rebook_entry_form" id="rebook_entry_form" method="post">
+		{% csrf_token %}
+		<input type="hidden" id="rebookEntryForm" name="rebookEntryForm">
+		<div class="modal-body">
+			<table width="70%" align="center">
+				<tr >
+					<td ><label>MAWB#:</label></td>
+					<td >
+					<input type="text" id="reebookdMawbNum" name="reebookdMawbNum" autofocus="autofocus" onKeyPress="if(IsEnterKey(event)==true)validateRebookMawb();void(0);">
+					</td>
+				</tr>
+			</table>
+		</div>
+		<div class="modal-footer" align="center">
+			<table>
+				<tr>
+					<td >
+					<input  id="rebookMawb" name="rebookMawb" class="btn btn-primary" data-dismiss="modal" value="Save" style="cursor:pointer;" readonly="readonly" onclick="validateRebookMawb();"/>
+					</td>
+				</tr>
+			</table>
+
+		</div>
+	</form>
+</div>
+
+
+
+<div id="myProgressChart" class="modal1 hide" style="height: 950px; width: 950px; margin:-6% 0% 0% 3%" align="center">	
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			&times;
+		</button>
+		<h3 align="center">Performance Chart</h3>
+	</div>
+	
+	<div class="modal-body"> 
+		<div id="chart_div" style="width: 750px; height: 400px; " align="center"> </div>			
+	</div>
+
+</div>				
+
+
+
+
+
+
+
+<div id="myModal" class="modal1 hide" >
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+			&times;
+		</button>
+		<h3 align="center">Add New Master</h3>
+	
+	</div>
+
+	
+</div>
+
+
+
+<div style="float: left; width:0.5%; height: 93%; position:relative; margin-left: 5px; background-color: " >
+	<div id="openCloseMenu" class="styleGreyBG styleButtonAlign">
+		<a class="rightMenuAction" id="openMenuImage" > <img src="{% static 'img/black.png' %}" style="width: 10px; height: 50px; " /> </a>
+	</div>
+</div>
+
+<div id="data_div_paprocess" name="data_div_paprocess" style="overflow-x:hidden ;width:100%;">
+
+
+				
+				
+	<div style="overflow-y:hidden;overflow-x:hidden; width: 100%">
+
+		<table border="2px solid black"  class="table-hover " bgcolor="#C6D1DD " style="width: 99.50%; ">
+
+			<tbody id="ShowHide"></tbody>
+
+			<tbody style='color: #03004C; text-shadow: 1px 1px 2px #66B3FF; font-family:"Candara"' >
+
+				<tr class="styleGreyBG" >
+					<th class="styleWidth35p" align="left" colspan="1"><!--						<div id="openCloseMenu" class="styleGreyBG styleButtonAlign">
+					<a class="rightMenuAction" id="openMenuImage" >
+					<img src="{% static 'img/rightOut.png' %}" />
+					</a>
+					</div>
+					<button type="button" id="ShowHide" style="height: 40px" >Search</button> 	--><!--<img id="ShowHide" src="{% static "img/search-button.png" %}" width="25" height="" />-->
+					<img class='styleCursorType' style='margin:1px 25px 0 0; float: right; width: 18px' id='' title='Add Row.' src={% static 'img/circle_plus.png' %} onclick=showtab('myTable');return false; /></th>
+
+					<th class=""  style="cursor:pointer; width: 2%"  onclick="{% if sort_by == '-station' %}$('#sort_by').val('station');{% else %}$('#sort_by').val('-station');{% endif %}document.getElementById ('mawb_filter_form').submit()" ><font size="">{% if sort_by == '-station' %}<i style="font-size:11px"> Station </i> {% else %}<b style="font-size: 13px;">Station</b>{% endif %} </font></th>
+					<th class="" style="cursor:pointer; width: 6.1%"  onclick="{% if sort_by == '-mawbNum' %}$('#sort_by').val('mawbNum');{% else %}$('#sort_by').val('-mawbNum');{% endif %}document.getElementById ('mawb_filter_form').submit();"><font size="">{% if sort_by == '-mawbNum' %}<i style="font-size:11px"> MAWB Number </i> {% else %}<b style="font-size: 13px;"> MAWB Number </b>{% endif %}</font></th>
+					<th class=""  style="cursor:pointer; width:3.4%" onclick="{% if sort_by == '-consoleNumber' %}$('#sort_by').val('consoleNumber');{% else %}$('#sort_by').val('-consoleNumber');{% endif %}document.getElementById ('mawb_filter_form').submit();"><font size="">{% if sort_by == '-consoleNumber' %}<i style="font-size:11px"> Consol#</i> {% else %}<b style="font-size: 13px;"> Consol# </b>{% endif %}</font></th>
+					<th class=""  style="cursor:pointer; width: 4%" onclick="{% if sort_by == '-customer' %}$('#sort_by').val('customer');{% else %}$('#sort_by').val('-customer');{% endif %}document.getElementById ('mawb_filter_form').submit();"><font size="">{% if sort_by == '-customer' %}<i style="font-size:11px"> Customer</i> {% else %}<b style="font-size: 13px;"> Customer </b>{% endif %}</font></th>
+					<th class="" style="cursor:pointer; width: 4.8%"  onclick="{% if sort_by == '-itInfo' %}$('#sort_by').val('itInfo');{% else %}$('#sort_by').val('-itInfo');{% endif %}document.getElementById ('mawb_filter_form').submit();"><font size="">{% if sort_by == '-itInfo' %}<i style="font-size:11px"> IT Information</i> {% else %}<b style="font-size: 13px;"> IT Information </b>{% endif %}</font></th>
+
+					<th class="" style="cursor:pointer; width: 1%"  onclick="{% if sort_by == '-flightCode' %}$('#sort_by').val('flightCode');{% else %}$('#sort_by').val('-flightCode');{% endif %}document.getElementById ('mawb_filter_form').submit();"><font size="">{% if sort_by == '-flightCode' %}<i style="font-size:11px">  Flight Code  </i> {% else %}<b style="font-size: 13px;">  Flight Code  </b>{% endif %}</font></th>
+					<th class="" style="cursor:pointer; width: 3%"  onclick="{% if sort_by == '-flightNum' %}$('#sort_by').val('flightNum');{% else %}$('#sort_by').val('-flightNum');{% endif %}document.getElementById ('mawb_filter_form').submit();"><font size="">{% if sort_by == '-flightNum' %}<i style="font-size:11px"> Flight# </i> {% else %}<b style="font-size: 13px;"> Flight# </b>{% endif %}</font></th>
+					<th class="" style="cursor:pointer; width: 4%"  onclick="{% if sort_by == '-etaDate' %}$('#sort_by').val('etaDate');{% else %}$('#sort_by').val('-etaDate');{% endif %}document.getElementById ('mawb_filter_form').submit();"><font size="1">{% if sort_by == '-etaDate' %}<i style="font-size:11px"> ETA Date </i>{% else %}<b style="font-size: 13px;"> ETA Date </b>{% endif %}</font></th>
+					<th class=""  style="cursor:pointer; width: 4%" onclick="{% if sort_by == '-etaTime' %}$('#sort_by').val('etaTime');{% else %}$('#sort_by').val('-etaTime');{% endif %}document.getElementById ('mawb_filter_form').submit();"><font size="">{% if sort_by == '-etaTime' %}<i style="font-size:11px"> ETA Time </i> {% else %}<b style="font-size: 13px;"> ETA Time </b>{% endif %}</font></th>
+					<th class="" style="cursor:pointer; width: 3%" onclick="{% if sort_by == '-shipmentStatus' %}$('#sort_by').val('shipmentStatus');{% else %}$('#sort_by').val('-shipmentStatus');{% endif %}document.getElementById ('mawb_filter_form').submit();" ><font size="">{% if sort_by == '-shipmentStatus' %}<i style="font-size:11px"> Shipment Status </i> {% else %}<b style="font-size: 13px;"> Shipment Status </b>{% endif %}</font></th>
+					<th class=""  style="cursor:pointer; width: 3%" onclick="{% if sort_by == '-shipmentStatus' %}$('#sort_by').val('trackSource');{% else %}$('#sort_by').val('-trackSource');{% endif %}document.getElementById ('mawb_filter_form').submit();"><font size="">{% if sort_by == '-shipmentStatus' %}<i style="font-size:11px"> Source </i> {% else %}<b style="font-size: 13px;"> Source </b>{% endif %}</font></th>
+					<th class=""  style="cursor:pointer; width: 4%" onclick="{% if sort_by == '-speakWith' %}$('#sort_by').val('speakWith');{% else %}$('#sort_by').val('-speakWith');{% endif %}document.getElementById ('mawb_filter_form').submit();"><font size="">{% if sort_by == '-speakWith' %}<i style="font-size:11px"> S/W </i> {% else %}<b style="font-size: 13px;"> S/W </b>{% endif %}</font></th>
+					<th class="" style="cursor:pointer; width: 3%" onclick="{% if sort_by == '-pmcOrLoose' %}$('#sort_by').val('pmcOrLoose');{% else %}$('#sort_by').val('-pmcOrLoose');{% endif %}document.getElementById ('mawb_filter_form').submit();" ><font size="">{% if sort_by == '-pmcOrLoose' %}<i style="font-size:11px"> PMC/LOOSE </i> {% else %}<b style="font-size: 13px;"> PMC/LOOSE </b>{% endif %}</font></th>
+					<th class=""  style="cursor:pointer; width: 3%" onclick="{% if sort_by == '-slac' %}$('#sort_by').val('slac');{% else %}$('#sort_by').val('-slac');{% endif %}document.getElementById ('mawb_filter_form').submit();"><font size="">{% if sort_by == '-slac' %}<i style="font-size:11px"> SLAC </i> {% else %}<b style="font-size: 13px;"> SLAC </b>{% endif %}</font></th>
+					<th class="" style="cursor:pointer; width: 2%" onclick="{% if sort_by == '-chgWeight' %}$('#sort_by').val('chgWeight');{% else %}$('#sort_by').val('-chgWeight');{% endif %}document.getElementById ('mawb_filter_form').submit();"><font size="">{% if sort_by == '-chgWeight' %}<i style="font-size:11px"> CHG. WGHT. </i> {% else %}<b style="font-size: 13px;" > CHG. WGHT. </b>{% endif %}</font></th>
+					<th class=""  style="cursor:pointer; width: 8%" onclick="{% if sort_by == '-remarksInClass' %}$('#sort_by').val('remarksInClass');{% else %}$('#sort_by').val('-remarksInClass');{% endif %}document.getElementById ('mawb_filter_form').submit();"  ><font size="">{% if sort_by == '-remarksInClass' %}<i style="font-size:11px"> Remarks in CLASS </i> {% else %}<b style="font-size: 13px;"> Remarks in CLASSS </b>{% endif %}</font></th>
+					<th class="" style="cursor:pointer; width: 4%" onclick="{% if sort_by == '-oneFStatus' %}$('#sort_by').val('oneFStatus');{% else %}$('#sort_by').val('-oneFStatus');{% endif %}document.getElementById ('mawb_filter_form').submit();" ><font size="">{% if sort_by == '-oneFStatus' %}<i style="font-size:11px"> HAWB Count </i> {% else %}<b style="font-size: 13px;"> HAWB Count </b>{% endif %}</font></th>
+					<th class="" style="cursor:pointer; width: 4%"  onclick="{% if sort_by == '-lastUpdatedDate' %}$('#sort_by').val('lastUpdatedDate');{% else %}$('#sort_by').val('-lastUpdatedDate');{% endif %}document.getElementById ('mawb_filter_form').submit();" ><font size="">{% if sort_by == '-lastUpdatedDate' %}<i style="font-size:11px"> Last Updated Date </i> {% else %}<b style="font-size: 13px;"> Last Updated Date </b>{% endif %}</font></th>
+					<th class="" style="cursor:pointer; width: 3%" onclick="{% if sort_by == '-lastUpdatedTime' %}$('#sort_by').val('lastUpdatedTime');{% else %}$('#sort_by').val('-lastUpdatedTime');{% endif %}document.getElementById ('mawb_filter_form').submit();" ><font size="">{% if sort_by == '-lastUpdatedTime' %}<i style="font-size:11px"> Last Updated Time </i> {% else %}<b style="font-size: 13px;"> Last Updated Time </b>{% endif %}</font></th>
+					<th class="" style="cursor:pointer; width: 6%" onclick="{% if sort_by == '-lastUpdatedByUser' %}$('#sort_by').val('lastUpdatedByUser');{% else %}$('#sort_by').val('-lastUpdatedByUser');{% endif %}document.getElementById ('mawb_filter_form').submit();" ><font size="">{% if sort_by == '-lastUpdatedByUser' %}<i style="font-size:11px"> Updated By </i> {% else %}<b style="font-size: 13px;"> Updated By </b>{% endif %}</font></th>
+					<th class="" style="cursor:pointer; width: 12%"  onclick="{% if sort_by == '-oneFStatusComment' %}$('#sort_by').val('oneFStatusComment');{% else %}$('#sort_by').val('-oneFStatusComment');{% endif %}document.getElementById ('mawb_filter_form').submit();" ><font size="">{% if sort_by == '-oneFStatusComment' %}<i style="font-size:11px"> Comment </i> {% else %}<b style="font-size: 13px;"> Comment </b>{% endif %}</font></th>
+					<th class="" style="cursor:pointer; width: 4% "  onclick="{% if sort_by == '-spProStatus' %}$('#sort_by').val('spProStatus');{% else %}$('#sort_by').val('-spProStatus');{% endif %}document.getElementById ('mawb_filter_form').submit();" ><font size="">{% if sort_by == '-spProStatus' %}<i style="font-size:11px"> FNB Status </i> {% else %}<b style="font-size: 13px;"> FNB Status </b>{% endif %}</font></th>
+					<th class="styleWidth12p"></th>
+				</tr>
+
+			</tbody>
+
+			<form name="mawb_filter_form" id="mawb_filter_form" method="post" >
+				<input type="hidden" id="sort_by" name="sort_by" value="{{sort_by}}" />
+				<tr class="styleGreyBG" id="filters" align="center" style="width: 100%; background-color: white;" bordercolordark="red">
+
+					{% csrf_token %}
+
+					<!--<tbody id="HiddenRows" >-->
+					<tbody id="ShowHide" >
+
+						<th colspan="1" style="width: 3.5%">
+						<input type="checkbox" id="chkAll" name="chkAll" onchange="select_all_new();">
+						</th>
+						<th colspan="1">
+						<input id="stationFilter" name="stationFilter" onkeyup="ChangeCase(this);" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.station %}{{kwargs.station}}{% endif %}">
+						</th>
+
+						<th >
+						<input id="mawbNumFilter" name="mawbNumFilter" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text" value="{% if kwargs.mawbNum__contains %}{{kwargs.mawbNum__contains}}{% endif %}"  >
+						</th>
+						<th >
+						<input id="consoleNumberFilter" name="consoleNumberFilter" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text" value="{% if kwargs.consoleNumber %}{{kwargs.consoleNumber}}{% endif %}">
+						</th>
+						<th  >
+						<input id="customerFilter" name="customerFilter" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.customer__contains %}{{kwargs.customer__contains}}{% endif %}">
+						</th>
+						<th  >
+						<input id="itInfoFilter" name="itInfoFilter" onkeyup="ChangeCase(this);" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.itInfo__contains %}{{kwargs.itInfo__contains}}{% endif %}">
+						</th>
+						<!--<td  >
+						<input id="etdDateFrom" name="etdDateFrom" type="text" {% if kwargs.etdDateFrom %} value={{kwargs.etdDateFrom}} {% endif %}/><input id="etdDateTo" name="etdDateTo" type="text" {% if kwargs.etdDateTo %} value={{kwargs.etdDateTo}} {% endif %}/>
+						</td>
+						<td  >
+						<input id="etdTimeFrom" name="etdTimeFrom" type="text" {% if kwargs.etdTimeFrom %} value={{kwargs.etdTimeFrom}} {% endif %}/><input id="etdTimeTo" name="etdTimeTo" type="text" {% if kwargs.etdTimeTo %} value={{kwargs.etdTimeTo}} {% endif %}/>
+						</td>-->
+						<th  >
+						<input id="flightCodeFilter" name="flightCodeFilter" onkeyup="ChangeCase(this);" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.flightCode__contains %}{{kwargs.flightCode__contains}}{% endif %}">
+						</th>
+						<th  >
+						<input id="flightNumFilter" name="flightNumFilter" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.flightNum %}{{kwargs.flightNum}}{% endif %}">
+						</th>
+						<th  >
+						<input id="etaDateFromFilter" placeholder="mm/dd/yy" name="etaDateFromFilter" class="styleCursorType" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.etaDate__gte %}{{kwargs.etaDate__gte|date:"m-d-y"}}{% endif %}">
+						<input id="etaDateToFilter" placeholder="mm/dd/yy" name="etaDateToFilter" class="styleCursorType" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text" value="{% if kwargs.etaDate__lte %}{{kwargs.etaDate__lte|date:"m-d-y"}}{% endif %}">
+						</th>
+						<th  >
+						<input id="etaTimeFromFilter" name="etaTimeFromFilter" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.etaTime__gte %}{{kwargs.etaTime__gte|time:'Hi'}}{% endif %}">
+						<input id="etaTimeToFilter" name="etaTimeToFilter" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.etaTime__lte %}{{kwargs.etaTime__lte|time:'Hi'}}{% endif %}">
+						</th>
+						<th  >
+						<input id="shipmentStatusFilter" name="shipmentStatusFilter" onkeyup="ChangeCase(this);" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.shipmentStatus %}{{kwargs.shipmentStatus}}{% endif %}">
+						</th>
+						<th  >
+						<input id="trackSourceFilter" name="trackSourceFilter" onkeyup="ChangeCase(this);" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.trackSource %}{{kwargs.trackSource}}{% endif %}">
+						</th>
+						<th  >
+						<input id="speakWithFilter" name="speakWithFilter" onkeyup="ChangeCase(this);" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.speakWith %}{{kwargs.speakWith}}{% endif %}">
+						</th>
+						<!--<td  >
+						<input id="ataDateFrom" name="ataDateFrom" type="text" {% if kwargs.ataDateFrom %} value={{kwargs.ataDateFrom}} {% endif %}/><input id="ataDateTo" name="ataDateTo" type="text" {% if kwargs.ataDateTo %} value={{kwargs.ataDateTo}} {% endif %}/>
+						</td>
+						<td  >
+						<input id="ataTimeFrom" name="ataTimeFrom" type="text" {% if kwargs.ataTimeFrom %} value={{kwargs.ataTimeFrom}} {% endif %}/><input id="ataTimeTo" name="ataTimeTo" type="text" {% if kwargs.ataTimeTo %} value={{kwargs.ataTimeTo}} {% endif %}/>
+						</td>-->
+						<th  >
+						<input id="pmcOrLooseFilter" name="pmcOrLooseFilter" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.pmcOrLoose %}{{kwargs.pmcOrLoose}}{% endif %}">
+						</th>
+						<th  >
+						<input id="slacFilter" name="slacFilter" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.slac %}{{kwargs.slac}}{% endif %}">
+						</th>
+						<th  >
+						<input id="chgWeightFilter" name="chgWeightFilter" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text" value="{% if kwargs.chgWeight %}{{kwargs.chgWeight}}{% endif %}">
+						</th>
+						<th  >
+						<input id="remarksInClassFilter" name="remarksInClassFilter" onkeyup="ChangeCase(this);" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.remarksInClass %}{{kwargs.remarksInClass}}{% endif %}">
+						</th>
+						<th  >
+						<input id="oneFStatusFilter" name="oneFStatusFilter" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.oneFStatus %}{{kwargs.oneFStatus}}{% endif %}">
+						</th>
+						<th  >
+						<input id="lastUpdatedDateFromFilter" name="lastUpdatedDateFromFilter" data-datepicker="" class="styleCursorType" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.lastUpdatedDate__gte %}{{kwargs.lastUpdatedDate__gte|date:"m-d-y"}}{% endif %}" >
+						<input id="lastUpdatedDateToFilter" name="lastUpdatedDateToFilter" class="styleCursorType" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.lastUpdatedDate__lte %}{{kwargs.lastUpdatedDate__lte|date:"m-d-y"}}{% endif %}">
+						</th>
+						<th  >
+						<input id="lastUpdatedTimeFromFilter" name="lastUpdatedTimeFromFilter" class="styleCursorType" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.lastUpdatedTime__gte %}{{kwargs.lastUpdatedTime__gte|time:'Hi'}}{% endif %}" >
+						<input id="lastUpdatedTimeToFilter" name="lastUpdatedTimeToFilter" class="styleCursorType" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.lastUpdatedTime__lte %}{{kwargs.lastUpdatedTime__lte|time:'Hi'}}{% endif %}">
+						</th>
+						<th  >
+						<input id="lastUpdatedByUserFilter" name="lastUpdatedByUserFilter" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.lastUpdatedByUser__contains %}{{kwargs.lastUpdatedByUser__contains}}{% endif %}">
+						</th>
+						<th  >
+						<input id="oneFStatusCommentFilter" name="oneFStatusCommentFilter" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.oneFStatusComment__contains %}{{kwargs.oneFStatusComment__contains}}{% endif %}">
+						</th>
+						
+						<th>
+						<input id="fnbStatusFilter" name="fnbStatusFilter" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.spProStatus_status %}{{kwargs.spProStatus}}{% endif %}">
+						</th>
+					</tbody>
+
+			</form>
+
+		</table>
+
+		<table border="1px solid black" id="myTable" style="font-size: 12px; display: none;"  >
+
+			<tr style="color: black;text-shadow: 1px 1px 2px white; background-color: #F2F5FF;"  align="center">
+
+				<td style="width: 2.41%"><a href="#" onclick="hidetab('myTable');return false" >Hide Table</a></td>
+				<td style="width: 0.1%"> Station</td>
+				<td style="width: 4.2%"> MAWB# </td>
+				<td style="width: 1.0%"> Consol# </td>
+				<td style="width: 2.1%"> Customer </td>
+				<td style="width: 2.20%"> IT Information </td>
+				<td style="width: 1.5%"> Flight Code </td>
+				<td style="width: 2.3%"> Flight # </td>
+				<td style="width: 2.9%"> ETA Date</td>
+				<td style="width: 1%"> ETA Time </td>
+				<td style="width: 1%"> Shipment Status </td>
+				<td style="width: 1.8%"> Source </td>
+				<td style="width: 2.8%"> S/W </td>
+				<td style="width: 1.1%"> PMC/LOOSE </td>
+				<td style="width: 1.8%"> SLAC </td>
+				<td style="width: 1.0%"> CHG. WGHT. </td>
+				<td style="width: 5.9%"> Remarks in CLASS </td>
+				<td style="width: 2.7%"> HAWB Count </td>
+				<td style="width: 2%"> Last Updated Date</td>
+				<td style="width: 1%"> Last Updated Time</td>
+				<td style="width: 3.8%"> Updated By</td>
+				<td style="width: 9.1%"> Comment </td>
+				<td style="width: 3.5%"> FNB Status </td>				
+			</tr>
+
+<tr >		
+<td >  <img id="addMawb" name="addMawb" src="{% static "img/save.gif" %}" width="15" height="" onclick="savee(this);" style="margin-left: 2px" /><img  id="ShowHide1" src="{% static "img/dw_arrow.png" %}" width="12" height="" onclick="displayResult()" style="margin-left: 10px; opacity:0.5 "/>	</td>	
+<td><input type="text" onkeyup="ChangeCase(this);" id="station" name="station" autofocus="autofocus" ></td>
+<td><input type="text" id="mawbNum" name="mawbNum" autofocus="autofocus" ></td>
+<td><input type="text" id="consoleNumber" name="consoleNumber" autofocus="autofocus" ></td>
+<td><input type="text" id="customer" name="customer" autofocus="autofocus" ></td>
+<td><input type="text" onkeyup="ChangeCase(this);"  id="itInfo" name="itInfo" autofocus="autofocus" ></td>
+<td><input type="text" onkeyup="ChangeCase(this);"  id="flightCode" name="flightCode" autofocus="autofocus" ></td>
+<td><input type="text" id="flightNum" name="flightNum" autofocus="autofocus" ></td>
+<td><input type="text" id="etaDate" placeholder="mm-dd-yy" name="etaDate" ></td>
+<td><input type="text" id="etaTime" name="etaTime" autofocus="autofocus" ></td>
+<td><input type="text" onkeyup="ChangeCase(this);"  id="shipmentStatus" name="shipmentStatus" autofocus="autofocus" ></td>
+<td><input type="text" onkeyup="ChangeCase(this);"  id="source" name="source" autofocus="autofocus" ></td>
+<td><input type="text" onkeyup="ChangeCase(this);"  id="speakWith" name="speakWith" autofocus="autofocus" ></td>
+<td><input type="text" id="pmcOrLoose" name="pmcOrLoose" autofocus="autofocus" ></td>
+<td><input type="text" id="slac" name="slac" autofocus="autofocus" ></td>
+<td><input type="text" id="chgWeight" name="chgWeight" autofocus="autofocus" ></td>
+<td><input type="text" onkeyup="ChangeCase(this);"  id="remarksInClass" name="remarksInClass" autofocus="autofocus" ></td>
+<td><input type="text" id="oneFStatus" name="oneFStatus" autofocus="autofocus" ></td>
+<td><input type="text" id="lastUpdatedDate" name="lastUpdatedDate" autofocus="autofocus" ></td>
+<td><input type="text" id="lastUpdatedTime" name="lastUpdatedTime" autofocus="autofocus" ></td>
+<td><input type="text" id="lastUpdatedByUser" name="lastUpdatedByUser" autofocus="autofocus" ></td>
+<td><input type="text" id="oneFStatusComment" name="oneFStatusComment" autofocus="autofocus" ></td>
+<td><input type="text" id="fnbStatus" name="fnbStatus" autofocus="autofocus"  ></td>
+</tr>	
+		</table>
+
+	</div>
+<div id="dataTable" class="dataTable" style="overflow-y:auto; overflow-x:hidden; width: 99.20%; height:83.50% ;   " > 
+	
+<!-- 		<div id="dataTable" class="dataTable" style="overflow-y:auto; overflow-x:hidden; width: 99%; height:80% ; border: 2px solid red;  " >-->
+
+	</div>
+</div>
+{% endblock %}
+
+
+
+

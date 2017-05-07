@@ -1,0 +1,225 @@
+{% load static from staticfiles %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html >
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<title>Adroit</title>
+		<link type="text/css" rel="stylesheet" href="{% static 'css/styles.css' %}" />
+		<link type="text/css" rel="icon" href="{% static "img/favicon_new.ico" %}" />
+		<link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+		<script type="text/javascript" src="{% static 'js/jquery.min.js' %}" ></script>
+		<script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}" ></script>
+		<script type="text/javascript" src="{% static 'js/jquery-latest.js' %}" ></script>
+		<script type="text/javascript" src="{% static 'js/jquery.blockUI.js' %}"  ></script>
+		<script type="text/javascript" src="{% static 'js/chili-1.7.pack.js' %}"  ></script>
+		<script type="text/javascript" src="{% static 'js/application.js' %}"  ></script>
+		<script type="text/javascript" src="{% static 'js/bootstrap.js' %}"  ></script>
+		<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"  ></script>
+		<script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"  ></script>
+		<script type="text/javascript" src="{% static 'js/bootstrap-alert.js' %}"  ></script>
+		</script>
+
+		<script type="text/javascript">
+			var totalCount = 4;
+			function ChangeIt() {
+				var num = Math.ceil(Math.random() * totalCount);
+				document.body.background = '/static/img/bgimage/' + num + '.jpg';
+				document.body.style.backgroundRepeat = "repeat";
+			}
+			//  style="background-image:url(/static/img/doc.jpg); background-size:100%; background-repeat:no-repeat; background-origin: bottom"
+		</script>
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+				var randomImages = ['1', '2', '3', '4', '6', '7', '8', '9'];
+				var rndNum = Math.floor(Math.random() * randomImages.length);
+				$("#body_id").css({
+					background : "url(/static/img/" + randomImages[rndNum] + ".jpg) no-repeat  "
+				});
+			});
+			
+
+		</script>
+
+		<style type="text/css">
+			#body_id {
+				background-size: 100%;
+			}
+		</style>
+
+	</head>
+
+	<body class="signin" id="body_id" onload="" style="background-size: 100%;" > <!--  growlDoneMsg('{{error_message}}');  -->
+
+		<img alt="ceva-logo" src="{% static "img/searce1.png" %}" width="150" />
+		
+		<div class="alert alert-error" style="height: 25px; width: 70%; position: absolute; opacity: 0.8; margin: 0px 0px 0px 14%; " align="center">
+			<button type="button" class="close" data-dismiss="alert">
+				&times;
+			</button>
+			<h3> {{error_message}} </h3>
+		</div>
+		
+		
+		
+		<div style="margin: 200px 0px 0px 0px">
+			<p style="font-size: 80px; font-family:Verdana; color: white; text-shadow: 1px 1px 3px #1C1C1C;" align="center";>
+				<b> &Aring;DROIT </b>
+			</p>
+			<br>
+			<div  id="wrapper" style="background: rgba(255, 255, 255, 0.7); padding: 25px; box-shadow: 0px 0px 5px 2px #1C1C1C; border-radius: 6px; width: 50%; height:15%;  ">
+				<div class="form-login" id="form_login">
+					<form name="frmLogin" method="post" action="/process_it/validate/" >
+						{% csrf_token %}
+						<input name="screen_width" id="screen_width" type="hidden">
+						<input name="screen_height" id="screen_height" type="hidden">
+						<table style="width: 90%; font-size: 16px; color:#3E3E3E ;" cellpadding="5px" align="center" >
+							<tr>
+								<td  class="username">Username</td>
+								<td  class="password">Password</td>
+							</tr>
+							<tr>
+								<td>
+								<input id="username" name="username" size="25" type="text" style="height: 23px">
+								</td>
+								<td>
+								<input id="password" name="password" size="25" type="password" style="height: 23px">
+								<input name="txtvalue" value="ueud0v9jo6hslgmfeu7d9iufn6" type="hidden">
+								</td>
+
+								<td class="login">
+								<button class="btn btn-primary" value="Log In" alt= "LogIn" style="border-radius: 3px; width: 80%">
+									Login
+								</button></td>
+							</tr>
+							<tr>
+								<td style="font-size:14px; color: #3E3E3E  ">
+								<input type="checkbox" value="Keep me logged in" />
+								Keep me logged in </td>
+
+								<td><a href="http://giss.invoize.com/recovery.php" style="font-size:14px; color: #3E3E3E  " >Forgot your password</a></td>
+							</tr>
+						</table>
+					</form>
+				</div>
+			</div>
+
+		</div>
+		<footer style="background: rgba(255, 255, 255, 0.5); position:absolute; bottom:0; width:100%; height:3%; font-size: 12px"  >
+			<b style="float: right;">&copy; Copyright 2011 <a href='http://www.searce.com' style="text-shadow: 1px 1px 2px #1C1C1C;"> Searce </a> ADROIT 3.0.1.6  &nbsp;&nbsp;&nbsp; </b>
+		</footer>
+
+		<script>
+			document.getElementById("username").focus();
+		</script>
+
+	</body>
+</html>
+
+<!--
+{% load static from staticfiles %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Adroit</title>
+<link type="text/css" rel="stylesheet" href="{% static 'css/styles.css' %}" />
+<link type="text/css" rel="icon" href="{% static "img/favicon_new.ico" %}" />
+<script type="text/javascript" src="{% static 'js/jquery.min.js' %}" > </script>
+<script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}" > </script>
+<script type="text/javascript" src="{% static 'js/jquery-latest.js' %}" > </script>
+<script type="text/javascript" src="{% static 'js/jquery.blockUI.js' %}"  > </script>
+<script type="text/javascript" src="{% static 'js/chili-1.7.pack.js' %}"  > </script>
+<script>
+function body_onload()
+{
+if(navigator.appName!='Netscape')
+{
+msg = ""
+document.getElementById('body_id').innerHTML="<h3>This system is compatible with firefox only.\
+We are in the process of making it compatible with other browser!</h3>";
+}
+var screenW = 640, screenH = 480;
+if (parseInt(navigator.appVersion)>3) {
+screenW = screen.width;
+screenH = screen.height;
+}
+else if (navigator.appName == "Netscape"
+&& parseInt(navigator.appVersion)==3
+&& navigator.javaEnabled()
+)
+{
+var jToolkit = java.awt.Toolkit.getDefaultToolkit();
+var jScreenSize = jToolkit.getScreenSize();
+screenW = jScreenSize.width;
+screenH = jScreenSize.height;
+}
+document.getElementById('screen_width').value=screenW;
+document.getElementById('screen_height').value=screenH;
+}
+</script>
+</head>
+<body class="signin" onload="body_onload();" id="body_id">
+<div id="wrapper">
+<div id="navigation1">
+<div id="navigation2">
+<h1 id="logo1">
+<img src="{% static 'img/searce1.png' %}" alt="searce_logo" align="left" width="150px"/>
+<img alt="adroit_logo" src="{% static "img/adroit_logo1.png" %}" style="margin-left: 68%; margin-top: 0.5%;" width="170"/>
+</h1>
+<br><br><br><br><br><center><h1></h1>
+</div>
+</div>
+<div id="login">
+<div id="login2">
+<div class="form-login" id="form_login">
+<form name="frmLogin" method="post" action="/process_it/validate/" >
+{% csrf_token %}
+<input name="screen_width" id="screen_width" type="hidden">
+<input name="screen_height" id="screen_height" type="hidden">
+<center><h2 style="font-family:Candara; font-size: 26px" >Login to Your Account</h2>
+<table width="50%" align="center" border="0" cellpadding="5">
+<tbody style="font-family:Candara; font-size: 15px" >
+<tr><td colspan=2 align='center'><font size=3 color="Red">{% if error_message %}<p style="font-family:Candara; font-size: 22px"><strong>{{ error_message }}</strong></p>{% endif %}</font></td></tr>
+<tr>
+<td class="username">Username:</td><td> <input id="username" name="username" size="38/" type="text"></td>
+</tr>
+<tr>
+<td class="password">Password:</td>
+<td>
+<input id="password" name="password" size="38" type="password">
+<input name="txtvalue" value="ueud0v9jo6hslgmfeu7d9iufn6" type="hidden">
+</td>
+</tr>
+<tr>
+<td class="login" colspan="3" align="center">
+<input value="Log In" alt= "LogIn" src="{% static 'img/buttonSignin.gif' %}" type="image" /></td>
+</tr>
+<tr>
+<td colspan="3" align="right">
+<div align="right"><a href="http://giss.invoize.com/recovery.php" style="font-size:11px;">Not able to access your account?</a></div>
+</td>
+</tr>
+</tbody>
+</table>
+</center>
+</form>
+</div>
+</div>
+</div>
+<div id="footer1">
+<div id="footer2">
+<center>
+&copy; Copyright 2011 <a href='http://www.searce.com'>Searce.</a> ADROIT 3.0.1.1
+</center>
+</div>
+</div>
+</div>
+<script>
+document.getElementById("username").focus();
+</script>
+</body>
+</html>
+-->
+

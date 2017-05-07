@@ -1,0 +1,83 @@
+{% extends "process_it/mailList.html" %}
+{% load static from staticfiles %}
+{% load process_it_extras %}
+{% block content %}
+
+{% for mail in mail_entries %}
+	{% with "flag_span_"|add:mail.id as flagid %}
+	{% with "color_span_"|add:mail.id as colorid %}
+	<!-- <div id={{mail.id}} onclick="chk_ajax('mail_details','/get_mail_body','mail_id={{mail.id}}');" style="background-color:white;" > -->
+	<div id={{mail.id}} onclick="view_email('{{mail.id}}');" style="border-top:thin solid;border-color:#776B6B;height:50px;overflow;width:100%; overflow-x: hidden;display:inline-block;vertical-align:top;background-color:white;" >
+	
+		<table width="100%"  > 
+				<tr sdstyle="height:40px" >
+					<td  colspan=1 align="left" >
+						<img id="read_{{mail.id}}" src="{% if mail.read == 1 %}{% static 'img/read.jpg' %}{% else %}{% static 'img/unread.jpg' %}{% endif %}" style=" width: 15px" >
+					</td>
+					<td  colspan=1 align="left" >
+						<font size="2" color="#000099" face="Candara" color="arial">{{mail.from|truncatechars:30}}</font>
+					</td>
+					<td width="55px;" align="right" >
+						<font size="1" face="Candara" color="Black" title={{mail.date|date}}>{{mail.date|time}}</font>
+					</td>
+					<td width="60px;" align="right" >
+						{% if mail.duplicate %}<font size="4" face="arial" color="Red" title="The Mawb# scanned in this mail exists in database!">*</font>{% endif %}
+						<span float="right" id="flag_{{mail.id}}">
+							<span>
+								<img src="{% if mail.flag == 0 %}
+											{% static "img/white_flag.jpg" %}
+										 {% else %}{% if mail.flag == 1 %}
+											{% static "img/red_flag.jpg" %}
+										{% else %}{% if mail.flag == 2 %}
+											{% static "img/done.gif" %}
+										{% else %}
+											{% static "img/white_flag.jpg" %}
+										{% endif %}{% endif %}{% endif %}" onclick="ajaxWithSerializeFlag('n','flag_{{mail.id}}','/process_it/mailAction/','actionType=flaging&mail_id={{mail.id}}');ajaxWithSerialize('n','taskDiv','/process_it/getTasks/','actionType=getTasks');" />
+							</span>
+						</span>
+						<span float="right" oncontextmenu="return popupMenu(event,'{{mail.id}}');" >
+							<div id="myMenu_{{mail.id}}" style="position:absolute;display:none;background-color:#DBEAF9; color:#000033;  opacity:100;
+  filter:alpha(opacity=99); " >
+								<font size="1">
+								<table style="width:120px; border: 1px solid black;" cellpadding="2" >
+									<tr style="border: 1px solid gray;" onclick="ajaxWithSerialize('n','box_code_{{mail.id}}','/process_it/mailAction/','actionType=setColor&mail_id={{mail.id}}&color_id=green');hideMyMenu();"><td><img style="width: 20px; height: 15px" src="{% static "img/green_box.jpg" %}" onclick="ajaxWithSerialize('n','box_code_{{mail.id}}','/process_it/mailAction/','actionType=setColor&mail_id={{mail.id}}&color_id=green');hideMyMenu();" /></td><td><font size="1">Green Category</font></td></tr>
+									<tr style="border: 1px solid gray;"><td><img style="width: 20px; height: 15px" src="{% static "img/yellow_box.jpg" %}" onclick="ajaxWithSerialize('n','box_code_{{mail.id}}','/process_it/mailAction/','actionType=setColor&mail_id={{mail.id}}&color_id=yellow');hideMyMenu();" /></td><td><font size="1">Yellow Category</font></td></tr>
+									<tr style="border: 1px solid gray;"><td><img style="width: 20px; height: 15px" src="{% static "img/red_box.jpg" %}" onclick="ajaxWithSerialize('n','box_code_{{mail.id}}','/process_it/mailAction/','actionType=setColor&mail_id={{mail.id}}&color_id=red');hideMyMenu();" /></td><td><font size="1">Red Category</font></td></tr>
+									<tr style="border: 1px solid gray;"><td><img style="width: 20px; height: 15px" src="{% static "img/blue_box.jpg" %}" onclick="ajaxWithSerialize('n','box_code_{{mail.id}}','/process_it/mailAction/','actionType=setColor&mail_id={{mail.id}}&color_id=blue');hideMyMenu();" /></td><td><font size="1">Blue Category</font></td></tr>
+									<tr style="border: 1px solid gray;"><td><img style="width: 20px; height: 15px" src="{% static "img/orange_box.jpg" %}" onclick="ajaxWithSerialize('n','box_code_{{mail.id}}','/process_it/mailAction/','actionType=setColor&mail_id={{mail.id}}&color_id=orange');hideMyMenu();" /></td><td><font size="1">Orange Category</font></td></tr>
+									<tr style="border: 1px solid gray;"><td><img style="width: 20px; height: 15px" src="{% static "img/purple_box.jpg" %}" onclick="ajaxWithSerialize('n','box_code_{{mail.id}}','/process_it/mailAction/','actionType=setColor&mail_id={{mail.id}}&color_id=purple');hideMyMenu();" /></td><td><font size="1">Purple Category</font></td></tr>
+									<tr style="border: 1px solid gray;"><td><img style="width: 20px; height: 15px" src="{% static "img/black_box.jpg" %}" onclick="ajaxWithSerialize('n','box_code_{{mail.id}}','/process_it/mailAction/','actionType=setColor&mail_id={{mail.id}}&color_id=black');hideMyMenu();" /></td><td><font size="1">Black Category</font></td></tr>
+									<tr style="border: 1px solid gray;"><td><img style="width: 20px; height: 15px" src="{% static "img/grey_box.jpg" %}" onclick="ajaxWithSerialize('n','box_code_{{mail.id}}','/process_it/mailAction/','actionType=setColor&mail_id={{mail.id}}&color_id=grey');hideMyMenu();" /></td><td><font size="1">Grey Category</font></td></tr>
+								</table>
+								</font>
+							</div>
+							<img src="{% static "img/white_box.jpg" %}" style="width: 20px; height: 15px" />							
+						</span>
+					</td>
+ 				</tr>
+				<tr>
+					<td align= "left" colspan=2>
+						<font size="1" face="arial" color="Black">
+							{{mail.subject|truncatechars:40}}
+						</font>
+					</td>
+					<td align="right">
+						{% if mail.attachments_list|length > 0 %}<img src="{% static 'img/attachment.gif' %}" style="width: 15px"/> {% endif %}
+					</td> 	
+					<td id="box_code_{{mail.id}}" align="right">
+					<table width="40">
+						   <tr>
+							   {% for category in mail.categories %}
+									   <td style="background-color:{{ category }}">&nbsp;</td>
+							   {% endfor %}
+						   </tr>
+				   </table>
+				   </td>
+				</tr>
+			</table>
+
+	</div>
+	{% endwith %} 
+	{% endwith %} 
+{% endfor %}
+{% endblock %}

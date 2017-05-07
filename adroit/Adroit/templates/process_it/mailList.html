@@ -1,0 +1,197 @@
+{% load static from staticfiles %}
+{% load process_it_extras %}
+
+<head>
+	<title>
+		Adroit
+	</title>
+	<link type="text/css" rel="icon" href="{% static 'img/favicon_new.ico' %}" />
+	<link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+	<link type="text/css" rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />	
+<!--  	<link type="text/css" rel="stylesheet" href="{% static 'css/style.css' %}" />	-->
+	<script type="text/javascript" src="{% static 'js/jquery-1.8.2.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/jquery-ui.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/application.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-transition.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-alert.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-modal.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-dropdown.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-scrollspy.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-tab.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-tooltip.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-popover.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-button.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-collapse.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-carousel.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-typeahead.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-datepicker.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/jquery.blockUI.js' %}"  > </script>
+  <script>
+  $(function() {
+    $( "#resizable" ).resizable();
+  });
+  </script>
+  
+  
+  
+  
+  
+  
+	
+</head>
+<body style="overflow-y:hidden;" onclick="hideMyMenu();" onload="filterMenu();$('#openCloseIdentifier').hide();$('#resizeDiv').draggable();{% if mail_entries|first %}{% with mail=mail_entries|first %} view_email('{{mail.id}}'); {% endwith %}{% endif %}"><!--onload="$('.resizeDiv').draggable();$('.resizeDiv').resizable();"-->
+        
+                <div>                       
+                        {% include "process_it/toolbar.html" %} 
+                </div> 
+                <div style="background-color:rgb(32,32,32)  ; width: 100%; height:66; color: white"><br style="size: 20px">
+                <table ><tr><td id="mailActionStatus"></td></tr></table>
+                <a class="btn btn-mini btn-primary" onclick="send_mail('newMail');">New Mail</a>
+                <a class="btn btn-mini btn-primary" onclick="send_mail('reply');">Reply</a>
+                <a class="btn btn-mini btn-primary" onclick="send_mail('replyAll');">Reply All</a>
+                <a class="btn btn-mini btn-primary" onclick="send_mail('forward');">Forward</a>
+                <a class="btn btn-mini btn-primary" onclick="send_mail('1monthOld');">One month old</a>
+                <a class="btn btn-mini btn-primary" onclick="send_mail('delete');">Delete</a>
+                <a class="btn btn-mini btn-primary" onclick="send_mail('unread');">Read/Unread</a>              
+                <div id="taskDiv" id="resizeDiv" class="isResizable" style="position:absolute;display:none;background-color:#E4EFF9; color:#000033; border: 1px outset #cccccc;padding:20px;" >...</div>
+                <a class="btn btn-mini btn-primary" onclick="show_task(event);">Tasks</a>
+                
+Read:<span id="readcount">{{readcounts}}</span>  Unread:<span id="unreadcount">{{counts|sub:readcounts}}</span>  Green:<span id="readcount">{{green_counts}}</span>  Blue:<span id="unreadcount">{{blue_counts}}</span>
+               
+              
+                 <input id="mawbNum" type="text" class="span2" style="height: 27px;  float: right; margin-right: 10px; " placeholder="   MAWB Number"/>
+                 <input type="button" style="float: right;" class="btn btn-info" onclick="mawbInsert();" value="Insert New MAWB"/>
+               
+                </div>
+                <span>
+                        <form name="mail_form" id="mail_form" >
+                                <TEXTAREA name="body" style="display:None;" cols="100" rows="20"></TEXTAREA>
+                                <!--<input type="text" name="body">-->
+                        </form>
+                </span>
+                
+                <!-- style="float: left;width: 24%;height:{{ screen_height|add:'-380' }}px; margin-left:10px; overflow: auto; overflow-x: hidden;display:inline-block;" -->
+                <div style="width: 100%;height: 87%;">
+<!--                 <div style="width: {{screen_width}}px;height: {{screen_height|add:'-210'}}px;"> 	 --> 
+                	<div style="width:100%;height:100%;">
+                	
+                	
+
+
+
+<!-- id="resizable"    -->	
+                <div  class="ui-widget-content" style="width: 24%;height: 100%; float:left;margin-left:10px;">
+                                        <table style="width:100%;"><tr><td>
+                                        <div id="sliderWrap" style="background-color:#E4EFF9;">
+                                                <div id="openCloseIdentifier" >                 
+                                                        <div id="sliderContent">                                
+                                                                <form name="mail_filter_form" id="mail_filter_form" method="post">
+                                                                {% csrf_token %}
+                                                                        <input type="hidden" id="selected_email_id" value="" />                         
+                                                                        <table id="the_menu" >  
+                                                                                <!--<tr><td>Hawb : </td><td><input type="text" name="hawb" id="hawb" onKeyPress="if(IsEnterKey(event)==true)document.getElementById('mail_filter_form').submit();void(0);" value="{% if querystring.hawb %}{{querystring.hawb}}{% endif %}"/></td></tr>-->
+                                                                                <!--<tr><td>Mawb : </td><td><input type="text" name="mawb" id="mawb" onKeyPress="if(IsEnterKey(event)==true)document.getElementById('mail_filter_form').submit();void(0);" value="{% if querystring.mawb %}{{querystring.mawb}}{% endif %}"/></td></tr>-->
+                                                                                <tr><td>Date : </td><td><input type="text" name="date" id="date" onKeyPress="if(IsEnterKey(event)==true)document.getElementById('mail_filter_form').submit();void(0);" style="cursor:pointer;" readonly="readonly" data-datepicker="" value="{% if querystring.date %}{{querystring.date}}{% endif %}"/></td></tr>
+                                                                                <tr><td>From : </td><td><input type="text" name="from" id="from" onKeyPress="if(IsEnterKey(event)==true)document.getElementById('mail_filter_form').submit();void(0);"  value="{% if querystring.from %}{{querystring.from}}{% endif %}"/></td></tr>
+                                                                                <!--<tr><td>Subject : </td><td><input type="text" name="subject" id="subject" onKeyPress="if(IsEnterKey(event)==true)document.getElementById('mail_filter_form').submit();void(0);" value="{% if querystring.subject %}{{querystring.subject}}{% endif %}" /></td></tr>-->
+                                                                                <tr><td>To : </td><td><input type="text" name="to" id="to" onKeyPress="if(IsEnterKey(event)==true)document.getElementById('mail_filter_form').submit();void(0);" value="{% if querystring.to %}{{querystring.to}}{% endif %}" /></td></tr>
+                                                                                <tr><td>Has Attch. : </td><td><input type="checkbox" name="attach" id="attach" {% if querystring.attach %}checked=""{% endif %} /></td></tr>
+                                                                        
+                                                                                <tr>
+                                                                                <td>Mail Box : </td>
+                                                                                <td>
+                                                                                        <select id="mailbox" name="mailbox">
+                                                                                                <option value='lax_import' {% if querystring.mailbox == 'lax_import' %}selected="true"{% endif %}>[LAX] IMPORT BOX</option>
+                                                                                                
+                                                                                                <option value='DFW_MailBox' {% if querystring.mailbox == 'DFW_MailBox' %}selected="true"{% endif %}>[DFW] MAIL BOX</option>
+                                                                                                
+                                                                                                <option value='bbk_service' {% if querystring.mailbox == 'bbk_service' %}selected="true"{% endif %}> [SH]-AM-US-LAX BBK SERVICE</option>
+                                                                                                <option value='arrival_notice' {% if querystring.mailbox == 'arrival_notice' %}selected="true"{% endif %}> [SH]-AM-US-LAX Arrival Notice</option>
+                                                                                        </select>
+                                                                                </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                <td>Recovery Time : </td>
+                                                                                <td>
+                                                                                        <select id="recoverytime" name="recoverytime">
+                                                                                                <option value='all' {% if querystring.recoverytime == 'all' %}selected="true"{% endif %}>All</option>
+                                                                                                <option value='first' {% if querystring.recoverytime == 'first' %}selected="true"{% endif %}>1:00 AM - 2:30 PM</option>
+                                                                                                <option value='second' {% if querystring.recoverytime == 'second' %}selected="true"{% endif %}>2:30 PM - 8:30 PM</option>
+                                                                                                <option value='third' {% if querystring.recoverytime == 'third' %}selected="true"{% endif %}>8:30 PM - 1:00 AM</option>
+                                                                                        </select>
+                                                                                </td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                <td>Color Code : </td>
+                                                                                <td>
+                                                                                        <select id="category" name="category">
+                                                                                                <option value='all' selected="true">All</option>
+                                                                                                <option value='empty' {% if querystring.category == 'empty' %}selected="true"{% endif %}>None</option>
+                                                                                                <option value='green' {% if querystring.category == 'green' %}selected="true"{% endif %} style="background-image:url({% static 'img/green_box.jpg' %}); color: black; text-shadow: 0px 0px 4px white" >Green (Master # Recognized)</option>
+                                                                                                <option value='yellow' {% if querystring.category == 'yellow' %}selected="true"{% endif %} style="background-image:url({% static 'img/yellow_box.jpg' %});color: black; text-shadow: 0px 0px 4px white">Yellow (Master # exist in system)</option>
+                                                                                                <option value='blue' {% if querystring.category == 'blue' %}selected="true"{% endif %} style="color:#EBD5D5;background-image:url({% static 'img/blue_box.jpg' %});text-shadow: 0px 0px 4px black">Blue (SFO Pre-Alert Emails)</option>                                                     
+                                                                                                <option value='red' {% if querystring.category == 'red' %}selected="true"{% endif %} style="color:#CBCACA;background-image:url({% static 'img/red_box.jpg' %});text-shadow: 0px 0px 0px white">Red (Not able to Recognized )</option>
+                                                                                                <option value='black' {% if querystring.category == 'black' %}selected="true"{% endif %} style="color:#CBCACA;background-image:url({% static 'img/black_box.jpg' %});text-shadow: 0px 0px 0px white">Black (Out of scope/ Communication Emails )</option>
+                                                                                                <option value='orange' {% if querystring.category == 'orange' %}selected="true"{% endif %} style="color:#CBCACA;background-image:url({% static 'img/orange_box.jpg' %});text-shadow: 0px 0px 0px white">Orange (LAS/SMF Shipments)</option>
+                                                                                                <option value='grey' {% if querystring.category == 'grey' %}selected="true"{% endif %} style="background-image:url({% static 'img/grey_box.jpg' %});text-shadow: 0px 0px 4px white">Grey (SLC Shipments)</option>
+                                                                                                <option value='purple' {% if querystring.category == 'purple' %}selected="true"{% endif %} style="background-image:url({% static 'img/purple_box.jpg' %});color: black; text-shadow: 0px 0px 4px white">Purple</option>
+                                                                                        </select>
+                                                                                </td>
+                                                                                </tr>                                                                        
+                                                                                <tr>
+                                                                                <td><a class="btn btn-mini btn-primary" onclick="document.getElementById('mail_filter_form').submit();" >search</a></td>
+                                                                                <td><a class="btn btn-mini btn-primary" onclick="clearMenu();">clear</a></td>                                                                           
+                                                                                </tr>
+                                                                        </table>
+                                                                </form>
+                                                        </div>
+                                                </div>
+                                                <div style="width:100%">
+                                                        <form name="global_search" id="global_search" method="post">
+                                                                <table>
+                                                                        <tr style="width:100%">
+                                                                                <td style="width:90%">
+                                                                                        <input type="text" name="globalSearch" id="globalSearch" onKeyPress="if(IsEnterKey(event)==true)document.getElementById('global_search').submit();void(0);" value="{% if querystring.globalSearch %}{{querystring.globalSearch}}{% endif %}"/>
+                                                                                </td>
+                                                                                <td >
+                                                                                        <img src={% static "img/search.png" %} onclick="document.getElementById('global_search').submit();" style="width: 18px; float: left;margin: 0px 2px 0px 3px " />
+																				</td>
+																				<td>		
+																						<div id="openCloseWrap" style="background-color:; float: right">
+																							<a href="#" class="topMenuAction" id="topMenuImage" style="float:right;">
+																								<img style="margin: 0px 7px 0px 5px" src="{% static 'img/alt.png' %}" />
+																							</a>
+																						</div>   
+                                                                                </td>
+                                                                        </tr>
+                                                                </table>
+                                                                
+                                                                
+                                                        </form>
+                                                </div>
+                                                
+                                        </div>
+                                        </td></tr>                             
+                                        </table>
+                                                                                
+                                        <div id="mail_list_div" align="center" style="wiAnthony.Fernandes.De.Castro@Cevalogis...dth: 100%;height: 96%; overflow: auto; overflow-x: hidden;display:inline-block;">
+                                        {% if mail_entries|first %}
+                                                {% block content %}{% endblock %}
+                                        {% else %}
+                                                <font size="2" face="arial" color="red" >No mail found!</font>
+                                        {% endif %}
+                                        </div>
+                                </div>                       
+                        
+                        <div id="mail_details" style="float:right;width: 74%;height: 100%; overflow: auto; overflow-x: hidden;display:inline-block;background-color:white;margin-left:10px;" >
+                                
+                          </div>
+                      <div style="width:100%;height:1%;display:inline-block;">{% include "process_it/footer.html" %}  </div>
+                </div>   
+            
+      
+                
+</body>
+
+
+

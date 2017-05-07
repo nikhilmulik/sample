@@ -1,0 +1,274 @@
+.rebookmodal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 1050;
+  max-height: 500px;
+  overflow: auto;
+  width: 350px;
+  margin: -250px 0 0 -280px;
+  background-color: #ffffff;
+  border: 1px solid #999;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  *border: 1px solid #999;
+  /* IE6-7 */
+
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  -webkit-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  -moz-box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding-box;
+  background-clip: padding-box;
+}
+.rebookmodal.fade {
+  -webkit-transition: opacity .3s linear, top .3s ease-out;
+  -moz-transition: opacity .3s linear, top .3s ease-out;
+  -ms-transition: opacity .3s linear, top .3s ease-out;
+  -o-transition: opacity .3s linear, top .3s ease-out;
+  transition: opacity .3s linear, top .3s ease-out;
+  top: -25%;
+}
+.rebookmodal.fade.in {
+  top: 50%;
+}
+
+.styleWidth2 {
+  width: 2px;
+}
+.styleWidth10 {
+  width: 10px;
+}
+.styleWidth12 {
+  width: 12px;
+}
+.styleWidth13 {
+  width: 13px;
+}
+.styleWidth30 {
+  width: 30px;
+}
+.styleWidth40 {
+  width: 40px;
+  
+}
+.styleWidth50 {
+  width: 50px;
+   
+}
+.styleWidth60 {
+  width: 60px;
+}
+.styleWidth70 {
+  width: 70px;
+}
+.styleWidth80 {
+  width: 80px;
+}
+.styleWidth90 {
+  width: 90px;
+}
+.styleWidth100 {
+  width: 100px;
+}
+.styleWidth120 {
+  width: 120px;
+}
+.styleWidth125 {
+  width: 125px;
+}
+.styleWidth150 {
+  width: 150px;
+}
+.styleWidth320 {
+  width: 320px;
+}
+.styleWidth1665 {
+  width: 1665px;
+}
+.styleWidth2150 {
+  width: 2150px;
+}
+.styleWidth140 {
+  width: 140px;
+}
+.styleWidth45p {
+  width: 4.5%;
+}
+.styleWidth25p {
+  width: 2.5%;
+  max-width: 44px;
+  overflow :hidden;
+}
+.styleWidth60p {
+  width: 6%;
+  max-width: 98px;
+  overflow :hidden;
+  
+}
+.styleWidth42p {
+  width: 4.2%;
+  max-width: 68px;
+  overflow :hidden;
+  
+}
+.styleWidth43p {
+  width: 4.3%;
+}
+.styleWidth50p {
+  width: 5%;
+  max-width: 82px;
+  overflow :hidden;
+  
+}
+.styleWidth32p {
+  width: 3.2%;
+  max-width: 52px;
+  overflow :hidden;
+  
+}
+.styleWidth34p {
+  width: 3.4%;
+  max-width: 57px;
+  overflow :hidden;
+  
+  
+}
+.styleWidth38p {
+  width: 3.8%;
+  max-width: 62px;
+  overflow :hidden;
+  
+}
+.styleWidth30p {
+  width: 3%;
+  max-width: 46px;
+  overflow :hidden;
+  
+}
+.styleWidth48p {
+  width: 4.8%;
+}
+.styleWidth49p {
+  width: 4.9%;
+}
+.styleWidth44p {
+  width: 4.4%;
+}
+.styleWidth41p {
+  width: 4.1%;
+}
+.styleWidth30p {
+  width: 3%;
+}
+.styleWidth80p {
+  width: 8%;
+  max-width: 130px;
+  overflow :hidden;
+}
+.styleWidth40p {
+  width: 4%;
+  max-width: 65px;
+  overflow :hidden;
+  
+}
+.styleWidth26p {
+  width: 2.6%;
+  max-width: 50px;
+  overflow :hidden;
+}
+.styleWidth33p {
+  width: 3.3%;
+}
+.styleWidth55p {
+  width: 5.5%;  
+  max-width: 90px;
+  overflow :hidden;
+}
+.styleWidth29p {
+  width: 2.9%;
+}
+.styleWidth35p {
+  width: 3.5%;
+}
+.styleWidth51p {
+  width: 5.1%;
+}
+.styleWidth46p {
+  width: 4.6%;
+}
+.styleWidth158p {
+  width: 15.8%;
+}
+.styleWidth160p {
+  width: 16%;
+}
+.styleWidth162p {
+  width: 16.2%;
+}
+.styleWidth169p {
+  width: 16.9%;
+}
+.styleWidth157p {
+  width: 15.7%;
+}
+.styleWidth146p {
+  width: 12.6%;
+  max-width: 260px;
+  overflow :hidden;
+}
+.styleWidth12p {
+  width: 1.2%;
+}
+.styleWidth09p {
+  width: 0.9%;
+}
+.styleWidth08p {
+  width: 0.8%;
+}
+.styleWidth178p {
+  width: 17.8%;
+}
+.styleWidth160p {
+  width: 16%;
+}
+.styleWidth20p {
+  width: 2%;
+}
+.styleColumnBorder {
+  border: 1px solid #000000;  
+}
+.styleInputBorder {
+  border: none;
+  background: transparent;  
+}
+.styleGreyBG {
+  background-color: #D1D1D1;
+}
+.styleRowBG {
+  background-color: #F7F2B2;
+}
+
+.styleCursorType {
+  cursor:pointer;
+}
+.stylePaddingLeft {
+  padding-left:10px;
+}
+
+.mytable
+{
+border-collapse:collapse; 
+border-color:#000000; 
+border-style:solid; 
+border-width:2px;
+}
+
+.mytable td
+{
+border-color:#cccccc; /*grey*/
+border-style:solid; 
+border-width:1px;
+}

@@ -1,0 +1,217 @@
+{% extends "process_it/prealertMaster.html" %}
+{% load static from staticfiles %}
+
+{% block contentmaster %}
+
+<div style="float: left; width:0.5%; height: 90%; position:relative; margin-left: 5px; background-color: " >
+	<div id="openCloseMenu" class="styleGreyBG styleButtonAlign">
+		<a class="rightMenuAction" id="openMenuImage" > <img src="{% static 'img/black.png' %}" style="width: 10px; height: 60px; "/> </a>
+	</div>
+</div>
+
+<div id="data_div_paprocess" name="data_div_paprocess" style="overflow-x:auto;width:{{screen_width}}px;">
+	<div style="overflow-y:hidden;overflow-x:hidden; width: 99%">
+
+		<table border="2px solid black"  class="table-hover " bgcolor="#505050 " style="width: 100%">
+
+			<tbody id="ShowHide"></tbody>
+			<tbody style="color: black; text-shadow: 1px 1px 2px white, -1px -1px 2px white; width: 100%" >
+
+				<tr class="styleGreyBG" align="center">
+
+					<th class="styleWidth12p"><!--	<div id="openCloseMenu" class="styleGreyBG styleButtonAlign">
+					<a class="rightMenuAction" id="openMenuImage" >
+					<img src="{% static 'img/rightOut.png' %}" />
+					</a>
+					</div>	--><img id="ShowHide" src="{% static "img/search-button.png" %}" width="25" height=""/></th>
+
+					<th class="styleWidth26p"><font size="2">Station</font></th>
+					<th class="styleWidth60p"><font size="2">MAWB #</font></th>
+					<th class="styleWidth34p"><font size="2">Console #</font></th>
+					<th class="styleWidth43p"><font size="2">Customer</font></th>
+					<th class="styleWidth25p"><font size="2">Flight Code</font></th>
+					<th class="styleWidth32p"><font size="2">Flight #</font></th>
+					<th class="styleWidth40p"><font size="2">ETA Date</font></th>
+					<th class="styleWidth25p"><font size="2">ETA Time</font></th>
+					<th class="styleWidth38p"><font size="2">Shipment Status</font></th>
+					
+					<th class="styleWidth38p"><font size="2">Source</font></th>
+					<th class="styleWidth38p"><font size="2"> S/W </font></th>
+					
+					
+					<th class="styleWidth50p"><font size="2">PMC/LOOSE</font></th>
+					<th class="styleWidth26p"><font size="2">SLAC</font></th>
+					<th class="styleWidth30p"><font size="2">CHG. WGHT.</font></th>
+					<th class="styleWidth80p"><font size="2">Remarks in CLASS</font></th>
+					<th class="styleWidth40p"><font size="2">COB Date</font></th>
+					<th class="styleWidth40p"><font size="2">Recovery #</font></th>
+					<th class="styleWidth55p"><font size="2">HBL Count</font></th>
+					<th class="styleWidth80p"><font size="2">Updated By</font></th>
+					<th class="styleWidth160p"><font size="2">Comment</font></th>
+					<th class="styleWidth160p"><font size="2.5">FNB Status</font></th>
+			</tbody>
+
+			<tr class="styleGreyBG">
+				<form name="mawb_filter_form" id="mawb_filter_form" method="post" >
+					{% csrf_token %}
+
+					<tbody id="HiddenRows"  style="width: 100%">
+						<td >
+						<input type="checkbox" id="chkAll" name="chkAll" onchange="select_all_cob();">
+						</td>
+						<td  >
+						<input id="stationFilter" name="station" type="text" {% if kwargs.station %} value={{kwargs.station}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						</td>
+						<td >
+						<input id="mawbNumFilter" name="mawbNum" type="text" {% if kwargs.mawbNum %} value={{kwargs.mawbNum}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						</td>
+						<td >
+						<input id="consoleNumberFilter" name="consoleNumber" type="text" {% if kwargs.consoleNumber %} value={{kwargs.consoleNumber}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						</td>
+						<td  >
+						<input id="customerFilter" name="customer" type="text" {% if kwargs.customer %} value={{kwargs.customer}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						</td>
+						<td  >
+						<input id="flightCodeFilter" name="flightCode" type="text" {% if kwargs.flightCode %} value={{kwargs.flightCode}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						</td>
+						<td  >
+						<input id="flightNumFilter" name="flightNum" type="text" {% if kwargs.flightNum %} value={{kwargs.flightNum}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						</td>
+						<td  >
+						<input id="etaDateFromFilter" name="etaDateFrom" style="cursor:pointer;" type="text" {% if kwargs.etaDateFrom %} value={{kwargs.etaDateFrom}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						<input id="etaDateToFilter" name="etaDateTo" style="cursor:pointer;" type="text" {% if kwargs.etaDateTo %} value={{kwargs.etaDateTo}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						</td>
+						<td  >
+						<input id="etaTimeFromFilter" name="etaTimeFrom" type="text" {% if kwargs.etaTimeFrom %} value={{kwargs.etaTimeFrom}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						<input id="etaTimeToFilter" name="etaTimeTo" type="text" {% if kwargs.etaTimeTo %} value={{kwargs.etaTimeTo}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						</td>
+						<td  >
+						<input id="shipmentStatusFilter" name="shipmentStatus" type="text" {% if kwargs.shipmentStatus %} value={{kwargs.shipmentStatus}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						</td>
+						
+						<td  >
+						<input id="trackSourceFilter" name="trackSource" type="text" {% if kwargs.trackSource %} value={{kwargs.trackSource}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						</td>
+						<td  >
+						<input id="speakWithFilter" name="speakWith" type="text" {% if kwargs.speakWith %} value={{kwargs.speakWith}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						</td>
+						
+						<td  >
+						<input id="pmcOrLooseFilter" name="pmcOrLoose" type="text" {% if kwargs.pmcOrLoose %} value={{kwargs.pmcOrLoose}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						</td>
+						<td  >
+						<input id="slacFilter" name="slac" type="text" {% if kwargs.slac %} value={{kwargs.slac}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						</td>
+						<td  >
+						<input id="chgWeightFilter" name="chgWeight" type="text" {% if kwargs.chgWeight %} value={{kwargs.chgWeight}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						</td>
+						<td  >
+						<input id="remarksInClassFilter" name="remarksInClass" type="text" {% if kwargs.remarksInClass %} value={{kwargs.remarksInClass}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						</td>
+						<td  >
+						<input id="cobDateFromFilter" name="cobDateFrom" style="cursor:pointer;" type="text" {% if kwargs.cobDateFrom %} value={{kwargs.cobDateFrom}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						<input id="cobDateToFilter" name="cobDateTo" style="cursor:pointer;" type="text" {% if kwargs.cobDateTo %} value={{kwargs.cobDateTo}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						</td>
+						<td  >
+						<input id="recoveryNumFilter" name="recoveryNum" type="text" {% if kwargs.recoveryNum %} value={{kwargs.recoveryNum}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						</td>
+						<td  >
+						<input id="oneFStatusFilter" name="oneFStatus" type="text" {% if kwargs.oneFStatus %} value={{kwargs.oneFStatus}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						</td>
+						<td  >
+						<input id="lastUpdatedByUserFilter" name="lastUpdatedByUser" type="text" {% if kwargs.lastUpdatedByUser %} value={{kwargs.lastUpdatedByUser}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						</td>
+						<td  >
+						<input id="oneFStatusCommentFilter" name="oneFStatusComment" type="text" {% if kwargs.oneFStatusComment %} value={{kwargs.oneFStatusComment}} {% endif %} onKeyPress="if(IsEnterKey(event)==true){var data=validatefiltermaster();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);"/>
+						</td>
+						<th>
+						<input id="fnbStatusFilter" name="fnbStatusFilter" onKeyPress="if(IsEnterKey(event)==true){var data=validatefilter();if(data===false){return false;}else{document.getElementById('mawb_filter_form').submit();}}void(0);" type="text"  value="{% if kwargs.spProStatus_status %}{{kwargs.spProStatus}}{% endif %}">						
+
+					</tbody>
+
+				</form>
+
+			</tr>
+		</table>
+	</div>
+	<div style="height:87%;overflow-y:auto;overflow-x:hidden;width:99%;">
+		<table class="table-hover" id="masterDataTable" style=" width: 100%; background-image:url({% static 'img/light.jpg' %})  " >
+			{% for mbl in arr %}
+			<tr id="{{mbl.mawbNum}}_row" >
+				<td class="styleWidth12p" colspan="" width="100">
+				<input type="checkbox" id="{{mbl.mawbNum}}_chkbox" onchange="check_uncheck('{{mbl.mawbNum}}'); " style="width: 28px">
+				<!--<div id="{{mbl.mawbNum}}_update"  ><img class="styleCursorType" src={% static "img/undo.png" %} onclick="movebacktopap('{{mbl.mawbNum}}')" /></div>--></td>
+				<td class="styleColumnBorder styleWidth26p">
+				<input type="text" class="styleInputBorder" id="{{mbl.mawbNum}}_station" disabled="true" value={% if mbl.station != None %}"{{ mbl.station }}"{% else %}""{% endif %} style="cursor:pointer;">
+				</td>
+				<td class="styleColumnBorder styleWidth60p">
+				<input type="text" class="styleInputBorder" id="{{mbl.mawbNum}}_mawbNum" disabled="true" value={% if mbl.mawbNum != None %}"{{ mbl.mawbNum }}"{% else %}""{% endif %} style="cursor:pointer;">
+				</td>
+				<td class="styleColumnBorder styleWidth34p">
+				<input type="text" class="styleInputBorder" id="{{mbl.mawbNum}}_consoleNumber" disabled="true" value={% if mbl.consoleNumber != None %}"{{ mbl.consoleNumber }}"{% else %}""{% endif %} style="cursor:pointer;">
+				</td>
+				<td class="styleColumnBorder styleWidth43p">
+				<input type="text" class="styleInputBorder" id="{{mbl.mawbNum}}_customer" disabled="true" value={% if mbl.customer != None %}"{{ mbl.customer }}"{% else %}""{% endif %} style="cursor:pointer;">
+				</td>
+				<td class="styleColumnBorder styleWidth25p">
+				<input type="text" class="styleInputBorder" id="{{mbl.mawbNum}}_flightCode" disabled="true" value={% if mbl.flightCode != None %}"{{ mbl.flightCode }}"{% else %}""{% endif %} style="cursor:pointer;">
+				</td>
+				<td class="styleColumnBorder styleWidth32p">
+				<input type="text" class="styleInputBorder" id="{{mbl.mawbNum}}_flightNum" disabled="true" value={% if mbl.flightNum != None %}"{{ mbl.flightNum }}"{% else %}""{% endif %} style="cursor:pointer;">
+				</td>
+				<td class="styleColumnBorder styleWidth40p">
+				<input type="text" class="styleInputBorder" id="{{mbl.mawbNum}}_etaDate" disabled="true" value="{{ mbl.etaDate|date:"d-m-Y" }}" style="cursor:pointer;">
+				</td>
+				<td class="styleColumnBorder styleWidth25p">
+				<input type="text" class="styleInputBorder" id="{{mbl.mawbNum}}_etaTime" disabled="true" value="{{ mbl.etaTime|time:"H:i" }}" style="cursor:pointer;">
+				</td>
+				<td class="styleColumnBorder styleWidth38p">
+				<input type="text" class="styleInputBorder" id="{{mbl.mawbNum}}_shipmentStatus" disabled="true" value={% if mbl.shipmentStatus != None %}"{{ mbl.shipmentStatus }}"{% else %}""{% endif %} style="cursor:pointer;">
+				</td>
+				
+				<td class="styleColumnBorder styleWidth38p">
+				<input type="text" class="styleInputBorder" id="{{mbl.mawbNum}}_trackSource" disabled="true" value={% if mbl.trackSource != None %}"{{ mbl.trackSource }}"{% else %}""{% endif %} style="cursor:pointer;">
+				</td>
+				
+				<td class="styleColumnBorder styleWidth38p">
+				<input type="text" class="styleInputBorder" id="{{mbl.mawbNum}}_speakWith" disabled="true" value={% if mbl.speakWith != None %}"{{ mbl.speakWith }}"{% else %}""{% endif %} style="cursor:pointer;">
+				</td>
+				
+				
+				<td class="styleColumnBorder styleWidth50p">
+				<input type="text" class="styleInputBorder" id="{{mbl.mawbNum}}_pmcOrLoose" disabled="true" value={% if mbl.pmcOrLoose != None %}"{{ mbl.pmcOrLoose }}"{% else %}""{% endif %} style="cursor:pointer;">
+				</td>
+				<td class="styleColumnBorder styleWidth26p">
+				<input type="text" class="styleInputBorder" id="{{mbl.mawbNum}}_slac" disabled="true" value={% if mbl.slac != None %}"{{ mbl.slac }}"{% else %}""{% endif %} style="cursor:pointer;">
+				</td>
+				<td class="styleColumnBorder styleWidth30p">
+				<input type="text" class="styleInputBorder" id="{{mbl.mawbNum}}_chgWeight" disabled="true" value={% if mbl.chgWeight != None %}"{{ mbl.chgWeight }}"{% else %}""{% endif %} style="cursor:pointer;">
+				</td>
+				<td class="styleColumnBorder styleWidth80p">
+				<input type="text" class="styleInputBorder" id="{{mbl.mawbNum}}_remarksInClass" disabled="true" value={% if mbl.remarksInClass != None %}"{{ mbl.remarksInClass }}"{% else %}""{% endif %} style="cursor:pointer;">
+				</td>
+				<td class="styleColumnBorder styleWidth40p">
+				<input type="text" class="styleInputBorder" id="{{mbl.mawbNum}}_cobDate" disabled="true" value="{{ mbl.cobDate|date:"d-m-Y" }}" style="cursor:pointer;">
+				</td>
+				<td class="styleColumnBorder styleWidth40p">
+				<input type="text" class="styleInputBorder" id="{{mbl.mawbNum}}_recoveryNum" disabled="true" value={% if mbl.recoveryNum != None %}"{{ mbl.recoveryNum }}"{% else %}""{% endif %} style="cursor:pointer;">
+				</td>
+				<td class="styleColumnBorder styleWidth55p">
+				<input type="text" class="styleInputBorder" id="{{mbl.mawbNum}}_oneFStatus" disabled="true" value={% if mbl.oneFStatus != None %}"{{ mbl.oneFStatus }}"{% else %}""{% endif %} style="cursor:pointer;">
+				</td>
+				<td class="styleColumnBorder styleWidth80p">
+				<input type="text" class="styleInputBorder" id="{{mbl.mawbNum}}_lastUpdatedByUser" disabled="true" value={% if mbl.lastUpdatedByUser != None %}"{{ mbl.lastUpdatedByUser }}"{% else %}""{% endif %} style="cursor:pointer;">
+				</td>
+				<td class="styleColumnBorder styleWidth160p">
+				<input type="text" class="styleInputBorder" id="{{mbl.mawbNum}}_oneFStatusComment" disabled="true" value={% if mbl.oneFStatusComment != None %}"{{ mbl.oneFStatusComment }}"{% else %}""{% endif %} style="cursor:pointer;">
+				</td>
+				<td class="styleColumnBorder styleWidth160p">
+				<input type="text" class="styleInputBorder" id="{{mbl.mawbNum}}_spProStatus" disabled="true" value={% if mbl.spProStatus != None %}"{{ mbl.spProStatus }}"{% else %}""{% endif %} style="cursor:pointer;">
+				</td>						
+			</tr>
+			{% endfor %}
+
+		</table>
+	</div>
+</div>
+{% endblock %}

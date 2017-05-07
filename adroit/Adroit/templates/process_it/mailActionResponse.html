@@ -1,0 +1,67 @@
+{% load static from staticfiles %}
+{% if actionType == "setColor" %}
+<table width="100%">
+	   <tr>
+			   {%if error != "" %}
+			   	<td><img title= "{{error}}" src="{% static 'img/error.gif' %}" /></td>
+			   {% endif %}
+			   {% for category in categories %}
+					   <td style="background-color:{{ category }}">&nbsp;</td>
+			   {% endfor %}
+	   </tr>
+</table>
+{% endif %}
+
+
+{% if actionType == "user_update" %}
+	<img src="{% static 'img/done.gif' %}" />
+{% endif %}
+
+{% if actionType == "add" %}
+	<img src="{% static 'img/done.gif' %}" />
+{% endif %}
+
+{% if actionType == "delete" %}
+	<img src="{% static 'img/done.gif' %}" />
+{% endif %}
+
+{% if actionType == "save" %}
+	<img src="{% static 'img/done.gif' %}" />
+{% endif %}
+
+{% if actionType == "update" %}
+	
+	<img src="{% static 'img/done.gif' %}" />
+{% endif %}
+
+{% if actionType == "movetopamaster" %}
+	<img src="{% static 'img/done.gif' %}" />
+{% endif %}
+
+{% if actionType == "movebacktopap" %}
+	<img src="{% static 'img/done.gif' %}" />
+{% endif %}
+
+{% if actionType == "1monthOld" %}
+	<img src="{% static 'img/done.gif' %}" />
+{% endif %}
+
+{% if actionType == "flaging" %}
+	
+		<img src="{% if flag == 0 %}{% static 'img/white_flag.jpg' %}{% else %}{% if flag == 1 %}{% static 'img/red_flag.jpg' %}{% else %}{% if flag == 2 %}{% static 'img/done.gif' %}{% endif %}{% endif %}{% endif %}"
+		 onclick="ajaxWithSerializeFlag('n','flag_{{mail.id}}','/process_it/mailAction/','actionType=flaging&mail_id={{mail.id}}');ajaxWithSerialize('n','taskDiv','/process_it/getTasks/','actionType=getTasks');" />
+	
+{% endif %}
+
+{% if actionType == 0 %}
+	invalid
+{% endif %}
+
+{% if actionType == "getTasks" %}
+		<a onclick="hide_task();" href="#">Close</a></br></br>	
+	<ul>
+	{% for task in tasks %}
+		<li>{{task.subject}}</li>
+	{% endfor %}	
+	</ul>
+{% endif %}

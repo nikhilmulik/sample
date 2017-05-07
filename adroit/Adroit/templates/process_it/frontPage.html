@@ -1,0 +1,187 @@
+{% load static from staticfiles %}
+{% load hotkeys %}
+<head>
+	<title>
+		Adroit
+	</title>
+	{% setup_hotkeys %}
+
+	<link type="text/css" rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+	
+	<link type="text/css" rel="stylesheet" href="{% static 'css/jquery-ui.css' %}" />
+	<link type="text/css" rel="icon" href="{% static 'img/favicon_new.ico' %}" />
+	<script type="text/javascript" src="{% static 'js/jquery.min.js' %}" > </script>	
+	<script type="text/javascript" src="{% static 'js/jquery-ui.min.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/application.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-transition.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-alert.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-modal.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-dropdown.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-scrollspy.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-tab.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-tooltip.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-popover.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-button.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-collapse.js' %}" > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-carousel.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-typeahead.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/jquery.blockUI.js' %}"  > </script>
+	<script type="text/javascript" src="{% static 'js/bootstrap-datepicker.js' %}"  > </script>
+
+
+
+
+	
+	<style type="text/css">#ui-datepicker-div { display: none; }</style>
+	
+	
+	<script type="text/javascript">
+		$(function ()
+		{
+			$("#fromDateFilter").datepicker({altField  : '#fromDateFilter', altFormat : 'mm-dd-yy', onSelect: function() {$("#fromDateFilter").focus();}});
+			$("#toDateFilter").datepicker({altField  : '#toDateFilter', altFormat : 'mm-dd-yy', onSelect: function() {$("#toDateFilter").focus();}});
+			
+	
+		}
+	);	
+	
+	</script>
+	
+
+<script type = "text/javascript">
+
+function show() {
+document.getElementById("myDiv").style.display="block";
+setTimeout("hide()", 3000); 
+}
+
+function hide() {
+document.getElementById("myDiv").style.display="none";
+}
+</script>
+ 
+ 
+
+ 
+ 
+ <style>
+ img.a1
+{
+opacity:0.4;
+filter:alpha(opacity=40); /* For IE8 and earlier */
+}
+
+
+ </style>
+ 
+	
+
+</head>
+<body style="background-image:url(/static/img/light.jpg); background-size: 100%;">
+	         <!--  	<a href="/displayLog/" >Log Link</a>-->
+	<div>
+		<div>
+			{% include "process_it/header.html" %}
+			{% include "process_it/toolbar.html" %}
+		</div>
+	
+		<div align="center" style="height:78%" ></gr>
+			
+			<br><br>
+			<table align="center" >
+
+				<tr>
+					<td>
+						<div >
+							<table border=1 cellpadding="5" cellspacing="8" style="font-family:Candara; border-radius: 5px">
+								
+								<tr> <th colspan="5" border="1px solid black" padding="5px" style="background-image:url(/static/img/black-w1.jpg)  " >
+								<h2 style="color: white">Dashboard Summary</h2></th> </tr>
+								<tr> 
+
+									<td> From : </td>
+									<td> <input id="fromDateFilter" name="fromDateFilter" class="styleCursorType" type="text"> </td>
+									<td> To : </td>
+									<td> <input id="toDateFilter" name="toDateFilter" class="styleCursorType" type="text" ></td>
+									<td> <input style="cursor:pointer" id="submitFilterButton" value="Go" type="button" onclick="datasourceCount($('#fromDateFilter').val(),$('#toDateFilter').val());"></td>
+								</tr>
+
+							</table>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div >
+							<br><table class="table-hover" border=2 cellpadding="4" cellspacing="4" width="100%" style="font-family:Candara">
+								<tr > <th colspan="5" border="1px solid black" padding="5px" style="background-image:url(/static/img/black-w1.jpg) " ><h2><b style="color: white">Processing Counts </b></h2></th> </tr>
+								<tr style=" font-size: ">
+									<td><b> Pre-Alerts </b> </td>
+									<td ><b> COB'ed </b></td>
+									<td><b> Booking Only </b></td>
+								</tr>
+								<tr>
+									<td> LAX Pre-Alerts </td>
+									<td id="lax_cob"> {{lax_cob}}</td>
+									<td id="lax_bo"> {{lax_bo}} </td>
+								</tr>
+								<tr>
+									<td> SFO Pre-Alerts </td>
+									<td id="sfo_cob"> {{sfo_cob}}</td>
+									<td id="sfo_bo"> {{sfo_bo}}</td>
+								</tr>
+								
+								<tr>
+									<td> DFW Pre-Alerts </td>
+									<td id="dfw_cob"> {{dfw_cob}}</td>
+									<td id="dfw_bo"> {{dfw_bo}}</td>
+								</tr>
+								<tr>
+									<td> IAH Pre-Alerts </td>
+									<td id="iah_cob"> {{iah_cob}}</td>
+									<td id="iah_bo"> {{iah_bo}}</td>
+								</tr>
+								
+							</table>	
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<div >
+							<br><table border=2 cellpadding="5" cellspacing="8" width="100%" style="font-family:Candara">
+								<tr ><th colspan="5" border="1px solid black" padding="5px" style="background-image:url(/static/img/black-w1.jpg)" ><h2><b style="color: white"> Mailbox Summary </b></h2></th> </tr>
+								<tr>
+									<td> LAX</td>
+									<td id="mail_lax_count" width="50%"> {{mail_lax_count}} </td>
+								</tr>
+								<tr>
+									<td> SFO</td>
+									<td id="mail_sfo_count" width="50%"> {{mail_sfo_count}} </td>
+								</tr>
+
+								<tr>
+									<td> Out of Scope</td>
+									<td id="mail_oos_count" width="50%"> {{mail_oos_count}}</td>
+								</tr>
+								<tr>
+									<td> Unidentified</td>
+									<td id="mail_uniden_count" width="50%"> {{mail_uniden_count}}</td>
+								</tr>
+								
+							</table>	
+						</div>
+					</td>
+				</tr>
+			</table>
+			
+					
+		</div>
+		
+		<footer>
+		<div id="temp" style="background-color:#D8D8D8;">
+			{% include "process_it/footer.html" %}
+		</div>
+		</footer>
+	</div>
+</body>
