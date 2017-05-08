@@ -209,8 +209,8 @@ class FileDemo(object):
 
                 PORT = 23
                 data = [""]   # <a onclick='history.back();'>Go back and create another AI file</a></script>"
-                username = username     # 'IAHAEKZB'
-                password = password     # 'GENERAL5'
+                username = username     # ''
+                password = password     # ''
                 tn = telnetlib.Telnet(HOST)
                 tn.open(HOST, PORT)      # get logged in here
                 # tn.set_debuglevel(10)
@@ -409,8 +409,8 @@ class FileDemo(object):
 
                 PORT = 23
                 data = [""]   # <a onclick='history.back();'>Go back and create another AI file</a></script>"
-                username = username     # 'IAHAEKZB'
-                password = password     # 'GENERAL5'
+                username = username     # ''
+                password = password     # ''
                 tn = telnetlib.Telnet(HOST)
                 tn.open(HOST, PORT)      # get logged in here
                 tn.set_debuglevel(10)
